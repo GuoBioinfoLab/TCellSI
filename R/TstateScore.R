@@ -7,11 +7,11 @@
 #' @param ctrl xxxxxxx.
 #' @param seed xxxxxxx.
 #' @return xxxxxxxx.
-#' @export
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom stats na.omit rnorm
 NULL
+#' @export
 
 Tstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100, seed = 1) {
     set.seed(seed = seed)
