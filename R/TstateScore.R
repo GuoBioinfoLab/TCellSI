@@ -19,6 +19,7 @@ Tstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100,
     all_sample_TPM1 <- apply(object,2,function(i) { return(i * all_sample_HK/mean(na.omit(i[HKgenes]))) })
 
     features.scores.df <- as.data.frame(dplyr::bind_rows(lapply(seq_len(length(markers)),function(k) {
+        message(paste0("Calculating of ",names(markers)[k])," state : ( ",k,"/",length(markers)," )")
         features <- markers[[k]]
         missing_features_input_sample <- setdiff(features, rownames(all_sample_TPM1))
         if (length(missing_features_input_sample) > 0) {
@@ -40,7 +41,7 @@ Tstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100,
         features <- intersect(features,rownames(reference))
         if (length(features) < 3) { stop("The number of features less than 3") }
         all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features),]
-        features.scores.vec <- sapply(seq_len(ncol(all_sample_TPM2)),function(i) {
+        features.scores.vec <- pbapply::pbsapply(seq_len(ncol(all_sample_TPM2)),function(i) {
             features.exp <- all_sample_TPM1[features,i]
             data.avg <- all_sample_TPM2[,i]
             data.avg <- sort(data.avg)
