@@ -51,7 +51,7 @@ Tstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100,
                 as.numeric(names(sample(data.cut[which(data.cut == j)], ctrl, FALSE)))
             })
             sample_feature <- c(features.exp,unlist(ctrl.use))
-            features.use <- rank(-sample_feature)/length(sample_feature)
+            features.use <- rank(sample_feature)/length(sample_feature)
             feature.score <- features.use[features]
             ctrl.score <- sort(features.use)[1:length(features.exp)]
             features.scores.use <- mean(feature.score) - mean(ctrl.score)
