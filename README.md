@@ -18,4 +18,5 @@ library(TstateScore)
 Tstate_calcScore(sample_expression)
 ```
 #output
+
 The output of the function is a matrix, where each row corresponds to a score name and each column represents a sample name. 
