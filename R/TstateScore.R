@@ -45,7 +45,7 @@ Tstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100,
             features.exp <- all_sample_TPM1[features,i]
             data.avg <- all_sample_TPM2[,i]
             data.avg <- sort(data.avg)
-            data.cut <- ggplot2::cut_number(data.avg + rnorm(n = length(data.avg))/1e+8,n = nbin, labels = FALSE, right = FALSE)
+            data.cut <- ggplot2::cut_number(data.avg + rnorm(n = length(data.avg))/1e+6,n = nbin, labels = FALSE, right = FALSE)
             names(data.cut) <- data.avg
             ctrl.use <- lapply(seq_len(nbin), function(j) {
                 as.numeric(names(sample(data.cut[which(data.cut == j)], ctrl, FALSE)))
