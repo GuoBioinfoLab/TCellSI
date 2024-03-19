@@ -69,7 +69,7 @@ Tstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100,
         return(features.scores.vec)
     })))
     rownames(features.scores.df) <- names(markers)
-    for (i in 8:10 ) {
+    for (i in c(6,8:10)) {
         for (j in 1:ncol(all_sample_TPM1)) {
             pq <- as.numeric(reference["CD4", names(markers)[i]] )
             if (all_sample_TPM1["CD4",j] < pq) {
