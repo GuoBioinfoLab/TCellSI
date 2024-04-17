@@ -61,9 +61,9 @@ Tstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100,
         features_ref = reference[features,names(markers)[k]]
         div_percent <- features_sample/features_ref
         flag_lower <- (features_sample - features_ref) < 0
-        number_lower <- colSums(flag_lower)
+        #number_lower <- colSums(flag_lower)
         percentage <- sapply(seq_len(ncol(div_percent)),function(i){
-            ifelse(number_lower[i] == 0,1,sum( div_percent[,i][flag_lower[,i]] ) / number_lower[i])
+            ifelse(number_lower[i] == 0,1,sum( div_percent[,i][flag_lower[,i]],(length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
         })
         features.scores.vec <- features.scores.vec * percentage
         return(features.scores.vec)
