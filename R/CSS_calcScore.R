@@ -69,22 +69,5 @@ CSS_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100, se
         return(features.scores.vec)
     })))
     rownames(features.scores.df) <- names(markers)
-    for (i in c(6,8:10)) {
-        for (j in 1:ncol(all_sample_TPM1)) {
-            pq <- as.numeric(reference["CD4", names(markers)[i]] )
-            if (all_sample_TPM1["CD4",j] < pq) {
-                percentage_T <- all_sample_TPM1["CD4", j]/pq
-            }else {
-                percentage_T <- 1
-            }
-            features.scores.df[i,j] <- features.scores.df[i,j]*percentage_T
-        }
-    }
-    vec <- sapply(seq_len(ncol(features.scores.df)),function(i) {
-        max(features.scores.df[8,i],features.scores.df[9,i],features.scores.df[10,i])
-    })
-    features.scores.df <- rbind(features.scores.df,vec)
-    rownames(features.scores.df)[11] <- "Helper"
-    features.scores.df <- features.scores.df[-8:-10,]
     return(features.scores.df)
 }
