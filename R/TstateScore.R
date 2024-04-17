@@ -1,4 +1,4 @@
-#' @title TCSS
+#' @title TCstate_calcScore
 #' @description xxxxxx.
 #' @details xxxxxx.
 #' @param object xxxxxxx.
