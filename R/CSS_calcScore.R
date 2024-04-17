@@ -57,8 +57,8 @@ CSS_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100, se
             features.scores.use <- mean(feature.score) - mean(ctrl.score)
             return(features.scores.use)
         })
-        features_sample = all_sample_TPM1[features,]
-        features_ref = reference[features,names(markers)[k]]
+        features_sample <- all_sample_TPM1[features,]
+        features_ref <- reference[features,names(markers)[k]]
         div_percent <- features_sample/features_ref
         flag_lower <- (features_sample - features_ref) < 0
         number_lower <- colSums(flag_lower)
