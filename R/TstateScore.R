@@ -13,7 +13,7 @@
 NULL
 #' @export
 
-TCSS <- function (object, reference = ref_data, nbin=50, ctrl = 100, seed = 1) {
+TCstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100, seed = 1) {
     set.seed(seed = seed)
     all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
     all_sample_TPM1 <- apply(object,2,function(i) { return(i * all_sample_HK/mean(na.omit(i[HKgenes]))) })
