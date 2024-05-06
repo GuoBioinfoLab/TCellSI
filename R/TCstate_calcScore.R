@@ -1,12 +1,12 @@
 #' @title TCstate_calcScore
-#' @description xxxxxx.
-#' @details xxxxxx.
-#' @param object xxxxxxx.
-#' @param reference xxxxxxx.
-#' @param nbin xxxxxxx.
-#' @param ctrl xxxxxxx.
-#' @param seed xxxxxxx.
-#' @return xxxxxxxx.
+#' @description You can use this function to calculate scores for T-cell states.
+#' 
+#' @param object; Sample inputs
+#' @param reference; Reference inputs
+#' @param nbin; How many gene bins
+#' @param ctrl; How many genes to select from each bins
+#' @param seed; Random number seed set
+#' @return features.scores.df
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom stats na.omit rnorm
