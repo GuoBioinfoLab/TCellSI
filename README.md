@@ -1,6 +1,6 @@
 # TCSS
 TCSS is a tool to assess the degree of eight distinct T-cell states from gene expression profiles. The major algorithm of TCSS is shown as follows:
-![image](https://github.com/JingminYang/TstateScore/blob/main/TCSSalgorithm.jpg)
+
 ## Installation
 
 You can install the development version of TstateScore by:
