@@ -2,7 +2,6 @@
 
 export(TCstate_calcScore)
 export(CSS_calcScore)
-export(exampleSample)
 import(dplyr)
 import(ggplot2)
 importFrom(stats,na.omit)
