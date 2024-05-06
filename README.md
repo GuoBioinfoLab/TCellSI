@@ -22,7 +22,7 @@ ResultScores <- Tstate_calcScore(exampleSample)
 #output
 The output of the function is a matrix, where each row corresponds to a score name and each column represents a sample name.  
 
-# ResultScores
+ ResultScores
 
 |            | ERR3502705 | ERR3502706 | ERR3502712 |
 |------------|--------------|--------------|--------------|
