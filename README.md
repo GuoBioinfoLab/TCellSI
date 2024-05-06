@@ -1,5 +1,5 @@
-# TstateScore
-TstateScore is a tool to calculate the scores of 8 T-cell status from gene expression datasets in RNA-Seq
+# TCSS
+TCSS is a tool to assess the degree of eight distinct T-cell states from gene expression profiles. The major algorithm of TCSS is shown as follows:
 
 ## Installation
 
