@@ -12,7 +12,7 @@ devtools::install_github("VyvyanYjm/TCSS")
 library(TstateScore)
 ```
 
-## Getting started
+## Example tutorial
 
 #sample_expression: Sample expression data frame in TPM format by log2-transformed RNA-seq data.
 ```
