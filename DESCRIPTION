@@ -8,7 +8,7 @@ Author@R:
            role = c("aut"),
            email = "yangjingmin2021@163.com",
            comment = c(ORCID = "0009-0006-7126-9017")))
-Maintainer: yangjingmin2021@163.com
+Maintainer: <yangjingmin2021@163.com>
 Description: TCSS is a tool to access the degree of eight distinct T-cell states including
     Quiescence, Regulating, Proliferation, Helper, Cytotoxicity, Progenitor exhaustion, Terminal exhaustion, and Senescence
     Use four spaces when indenting paragraphs within the Description.
