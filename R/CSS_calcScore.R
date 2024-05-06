@@ -6,7 +6,7 @@
 #' @param nbin; How many gene bins
 #' @param ctrl; How many genes to select from each bins
 #' @param seed; Random number seed set
-#' @return features.scores.df.
+#' @return features.scores.df
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom stats na.omit rnorm
