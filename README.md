@@ -1,5 +1,5 @@
 # TCSS
-TCSS is a tool to assess the degree of eight distinct T-cell states from gene expression profiles. The major algorithm of TCSS is shown as follows:
+TCSS is a tool to assess the degree of eight distinct T-cell states including Quiescence, Regulating, Proliferation, Helper, Cytotoxicity, Progenitor exhaustion, Terminal exhaustion, and Senescence based on the degree of resting, activation, and suppression using specific gene sets and a compiled reference spectrum from transcriptomic data. The major algorithm of TCSS is shown as follows:
 ![image](https://github.com/JingminYang/TstateScore/blob/main/TCSSalgorithm.jpg)
 ## Installation
 
