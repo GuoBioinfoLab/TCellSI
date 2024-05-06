@@ -16,8 +16,9 @@ library(TCSS)
 ## Example tutorial
 
 #sample_expression: Sample expression data frame in TPM format by log2-transformed RNA-seq data.
-``` 
-Tstate_calcScore(example_log2TPM)
+```
+data(exampleSample)
+Tstate_calcScore(exampleSample)
 ``` 
 #output
 
