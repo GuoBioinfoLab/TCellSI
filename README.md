@@ -9,7 +9,7 @@ You can install the development version of TCSS by:
 # install.packages("devtools")
 devtools::install_github("VyvyanYjm/TCSS")
 
-library(TstateScore)
+library(TCSS)
 ```
 
 ## Example tutorial
