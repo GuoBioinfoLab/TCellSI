@@ -3,7 +3,7 @@ TCSS is a tool to assess the degree of eight distinct T-cell states from gene ex
 ![image](https://github.com/JingminYang/TstateScore/blob/main/TCSSalgorithm.jpg)
 ## Installation
 
-You can install the development version of TstateScore by:
+You can install the development version of TCSS by:
 
 ``` r
 # install.packages("devtools")
