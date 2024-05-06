@@ -19,7 +19,7 @@ library(TCSS)
 ```
 ResultScores <- Tstate_calcScore(exampleSample)
 ``` 
-#output
+#output:
 The output of the function is a matrix, where each row corresponds to a score name and each column represents a sample name.  
 
  ResultScores
