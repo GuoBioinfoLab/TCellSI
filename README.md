@@ -34,11 +34,13 @@ OtherScores <- CSS_calcScore‎(exampleSample,reference=XXX, markers=XXX)
 ```
 #Forms of gene sets and reference profile look like:
 ```
-#gene sets
-#
-
-
-
+#gene sets : list
+#$cell_state1
+#[1] "XXX"  "XXX"  "XXX" ...
+#$cell_state2
+#[1] "XXX"   "XXX"   "XXX" ...
+#$cell_state3
+#[1] "XXX"   "XXX"   "XXX" ...
 ```
 ```
 #reference
