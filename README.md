@@ -30,7 +30,7 @@ ResultScores <- TCstate_calcScore(exampleSample)
 #If you want to apply this method to other types of gene set scoring, you need to prepare marker gene sets and a reference profile that you want to, then you can use the following function to calculate other scores：
 
 ```
-OtherScores <- CSS_calcScore‎(exampleSample,reference = ref_data)
+OtherScores <- CSS_calcScore‎(exampleSample,reference = ref_data, markers)
 ```
 
 #output:
