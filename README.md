@@ -1,7 +1,7 @@
 # TCellSI
 TCellSI is a tool to assess the degree of eight distinct T-cell states including Quiescence, Regulating, Proliferation, Helper, Cytotoxicity, Progenitor exhaustion, Terminal exhaustion, and Senescence based on the degree of resting, activation, and suppression using specific gene sets and a compiled reference spectrum from transcriptomic data. The major algorithm of TCellSI is shown as follows: 
 
-![image]([[https://github.com/VyvyanYjm/TCSS/blob/main/algorithm.jpg](https://github.com/VyvyanYjm/TCSS/blob/main/algorithm.jpg)])
+![image]([https://github.com/VyvyanYjm/TCellSI/blob/main/algorithm.jpg])
 ## Installation
 
 You can install the development version of TCellSI by:
