@@ -10,7 +10,7 @@ You can install the development version of TCellSI by:
 # install.packages("devtools")
 devtools::install_github("VyvyanYjm/TCellSI")
 
-library(TCSS)
+library(TCellSI)
 ```
 
 ## Example tutorial
