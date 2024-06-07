@@ -4,7 +4,7 @@ TCellSI is a tool to assess the degree of eight distinct T-cell states including
 ![image](https://github.com/JingminYang/TstateScore/blob/main/TCSSalgorithm.jpg)
 ## Installation
 
-You can install the development version of TCSS by:
+You can install the development version of TCellSI by:
 
 ``` r
 # install.packages("devtools")
