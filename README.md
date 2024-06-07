@@ -34,13 +34,21 @@ OtherScores <- CSS_calcScore‎(exampleSample,reference=XXX, markers=XXX)
 ```
 #Forms of gene sets and reference profile look like:
 ```
-#reference
+#gene sets
 #
-#
-#
-#
-```
 
+
+
+```
+```
+#reference
+#            cell_state1 cell_state2 cell_state3
+# DDX11L1     0.32323232 0.54567463   0.32456323
+# WASH7P      0.82670591 1.89565638   1.40492732
+# MIR6859-1   0.02172025 0.03816506   0.52313432
+# MIR1302-2HG 0.00000000 0.00000000   0.00032302
+# MIR1302-2   0.00000000 0.00000000   0.00002132
+```
 #output:
 The output of the function is a matrix, where each row corresponds to a score name and each column represents a sample name.  
 ```
