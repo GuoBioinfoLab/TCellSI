@@ -55,7 +55,7 @@ OtherScores <- CSS_Calculate‎(expr, reference = XXX, markers = XXX)
 The output of the function is a data frame, where each row corresponds to a score name and each column represents a sample name.  
 ```
 # ResultScores
-#                      SRR5088825 SRR5088828 SRR5088830
+#                        SRR5088825 SRR5088828 SRR5088830
 # Quiescence             0.6422158  0.6153140  0.5105856
 # Regulating             0.4404173  0.3974391  0.1670356
 # Proliferation          0.5780474  0.5761891  0.3994404
