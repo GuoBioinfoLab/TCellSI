@@ -52,7 +52,7 @@ OtherScores <- CSS_Calculate‎(exampleSample, reference = XXX, markers = XXX)
 #[1] "XXX"   "XXX"   "XXX" ...
 ```
 #output:
-The output of the function is a dataframe, where each row corresponds to a score name and each column represents a sample name.  
+The output of the function is a data frame, where each row corresponds to a score name and each column represents a sample name.  
 ```
 # ResultScores
 #                      ERR3502705 ERR3502706 ERR3502712
