@@ -25,12 +25,12 @@ library(TCellSI)
 # A1BG         1.907599  3.284418   4.0821248
 # A1BG-AS1     3.083914  2.021501   4.5169002
 expr <- TCellSI::exampleSample
-ResultScores <- TCellSITCSS_Calculate(expr) 
+ResultScores <- TCSS_Calculate(expr) 
 ```
 #If you want to apply this method to other types of gene set scoring, you need to prepare marker gene sets and a reference profile that you want to, then you can use the following function to calculate other scores：
 
 ```
-OtherScores <- CSS_Calculate‎(exampleSample, reference = XXX, markers = XXX)
+OtherScores <- CSS_Calculate‎(expr, reference = XXX, markers = XXX)
 ```
 #Forms of reference profile and markers look like:
 ```
