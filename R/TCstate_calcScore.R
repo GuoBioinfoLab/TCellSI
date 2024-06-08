@@ -17,13 +17,16 @@ TCSS_Calculate <- function (object, reference = ref_data, nbin=50, ctrl = 100, s
     set.seed(seed = seed)
     all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
     all_sample_TPM1 <- apply(object,2,function(i) { return(i * all_sample_HK/mean(na.omit(i[HKgenes]))) })
-
+    helper_message_shown <- FALSE
     features.scores.df <- as.data.frame(dplyr::bind_rows(lapply(seq_len(length(markers)),function(k) {
-        if (k %in% c(4)) {
-            message(paste0("Calculating of ", "Helper"), " state")
-        } else if (k %in% c(1,2,3,7,8,9,10)) {
+        if (k %in% c(1, 2, 3, 7, 8, 9, 10)) {
             message(paste0("Calculating of ", names(markers)[k]), " state")
-        } 
+        } else if (k %in% c(4)) {
+            if (!helper_message_shown) {
+                message(paste0("Calculating of Helper state"))
+                helper_message_shown <- TRUE
+            }
+        }
         features <- markers[[k]]
         missing_features_input_sample <- setdiff(features, rownames(all_sample_TPM1))
         if (length(missing_features_input_sample) > 0) {
