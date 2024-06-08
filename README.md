@@ -55,15 +55,15 @@ OtherScores <- CSS_Calculate‎(expr, reference = XXX, markers = XXX)
 The output of the function is a data frame, where each row corresponds to a score name and each column represents a sample name.  
 ```
 # ResultScores
-#                      ERR3502705 ERR3502706 ERR3502712
-# Quiescence             0.7721079  0.7722078  0.7482268
-# Regulating             0.6513540  0.6003654  0.6041851
-# Proliferation          0.6793562  0.6450539  0.6275441
-# Helper                 0.6846261  0.6487488  0.6340548
-# Cytotoxicity           0.6529064  0.5928662  0.6044746
-# Progenitor Exhaustion  0.5308267  0.4070450  0.4134950
-# Terminal Exhaustion    0.5340890  0.4552266  0.4388102
-# Senescence             0.6267208  0.5927787  0.5699727
+#                      SRR5088825 SRR5088828 SRR5088830
+# Quiescence             0.6422158  0.6153140  0.5105856
+# Regulating             0.4404173  0.3974391  0.1670356
+# Proliferation          0.5780474  0.5761891  0.3994404
+# Helper                 0.5647604  0.4063729  0.2121070
+# Cytotoxicity           0.6482720  0.5826073  0.1829111
+# Progenitor Exhaustion  0.5905679  0.5308304  0.2482848
+# Terminal Exhaustion    0.6624943  0.6222188  0.3311532
+# Senescence             0.5921543  0.5725185  0.2896508
 ```
  
 
