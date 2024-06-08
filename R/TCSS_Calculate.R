@@ -93,5 +93,6 @@ TCSS_Calculate <- function (object, reference = ref_data, nbin=50, ctrl = 100, s
     features.scores.df <- rbind(features.scores.df,vec)
     rownames(features.scores.df)[11] <- "Helper"
     features.scores.df <- features.scores.df[-4:-6,]
+    features.scores.df <- features.scores.df[c("Quiescence","Regulating","Proliferation","Helper","Cytotoxicity","Progenitor_exhaustion","Terminal_exhaustion","Senescence"),]
     return(features.scores.df)
 }
