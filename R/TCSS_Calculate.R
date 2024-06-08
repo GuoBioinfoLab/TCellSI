@@ -76,7 +76,7 @@ TCSS_Calculate <- function (object, reference = ref_data, nbin=50, ctrl = 100, s
         return(features.scores.vec)
     })))
     rownames(features.scores.df) <- names(markers)
-    for (i in c(6,8:10)) {
+    for (i in c(2,4:6)) {
         for (j in 1:ncol(all_sample_TPM1)) {
             pq <- as.numeric(reference["CD4", names(markers)[i]] )
             if (all_sample_TPM1["CD4",j] < pq) {
@@ -88,10 +88,10 @@ TCSS_Calculate <- function (object, reference = ref_data, nbin=50, ctrl = 100, s
         }
     }
     vec <- sapply(seq_len(ncol(features.scores.df)),function(i) {
-        max(features.scores.df[8,i],features.scores.df[9,i],features.scores.df[10,i])
+        max(features.scores.df[4,i],features.scores.df[5,i],features.scores.df[6,i])
     })
     features.scores.df <- rbind(features.scores.df,vec)
     rownames(features.scores.df)[11] <- "Helper"
-    features.scores.df <- features.scores.df[-8:-10,]
+    features.scores.df <- features.scores.df[-4:-6,]
     return(features.scores.df)
 }
