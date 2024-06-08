@@ -19,9 +19,9 @@ TCstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100
     all_sample_TPM1 <- apply(object,2,function(i) { return(i * all_sample_HK/mean(na.omit(i[HKgenes]))) })
 
     features.scores.df <- as.data.frame(dplyr::bind_rows(lapply(seq_len(length(markers)),function(k) {
-        if (k %in% c(4, 5, 6)) {
+        if (k %in% c(4)) {
             message(paste0("Calculating of ", "Helper"), " state")
-        } else {
+        } else if (k %in% c(1,2,3,7,8,9,10)) {
             message(paste0("Calculating of ", names(markers)[k]), " state")
         }
         features <- markers[[k]]
