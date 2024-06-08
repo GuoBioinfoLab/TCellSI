@@ -23,7 +23,9 @@ TCstate_calcScore <- function (object, reference = ref_data, nbin=50, ctrl = 100
             message(paste0("Calculating of ", "Helper"), " state")
         } else if (k %in% c(1,2,3,7,8,9,10)) {
             message(paste0("Calculating of ", names(markers)[k]), " state")
-        } else {}
+        } else if (k %in% c(5,6)){
+            # 不显示
+        }
         features <- markers[[k]]
         missing_features_input_sample <- setdiff(features, rownames(all_sample_TPM1))
         if (length(missing_features_input_sample) > 0) {
