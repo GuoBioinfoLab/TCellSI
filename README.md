@@ -18,7 +18,7 @@ library(TCellSI)
 #sample_expression: Sample expression data frame in TPM format by log2-transformed RNA-seq data.
 ```
 # exampleSample
-#             ERR3502705 ERR3502706 ERR3502712
+#             SRR5088825 SRR5088828 SRR5088830
 # DDX11L1     0.00000000 0.00000000   0.000000
 # WASH7P      0.82670591 1.89565638   1.404927
 # MIR6859-1   0.02172025 0.03816506   0.000000
