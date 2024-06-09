@@ -11,7 +11,6 @@
 #' @import dplyr
 #' @importFrom stats na.omit rnorm
 #' @export
-
 TCSS_Calculate <- function (object, reference = ref_data, nbin=50, ctrl = 100, seed = 1) {
     set.seed(seed = seed)
     all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
