@@ -1,4 +1,4 @@
-#' @title CSS_calcScore
+#' @title CSS_Calculate
 #' @description You can use this function to calculate scores for any set of genes.
 #' 
 #' @param object; Sample inputs
