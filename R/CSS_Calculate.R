@@ -10,7 +10,6 @@
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom stats na.omit rnorm
-NULL
 #' @export
 CSS_Calculate <- function (object, reference, markers, nbin=50, ctrl = 100, seed = 1) {
     set.seed(seed = seed)
