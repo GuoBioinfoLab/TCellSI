@@ -1,4 +1,4 @@
-#' @title TCstate_calcScore
+#' @title TCSS_Calculate
 #' @description You can use this function to calculate scores for T-cell states.
 #' 
 #' @param object; Sample inputs
