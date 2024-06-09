@@ -10,6 +10,7 @@
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom stats na.omit rnorm
+NULL
 #' @export
 TCSS_Calculate <- function (object, reference = ref_data, nbin=50, ctrl = 100, seed = 1) {
     set.seed(seed = seed)
