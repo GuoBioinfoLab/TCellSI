@@ -9,6 +9,10 @@
 #' @return features.scores.df
 #' @import ggplot2
 #' @import dplyr
+#' @examples
+#' # Example usage:
+#' # TCSS_Calculate()
+#' @keywords T-cell state, scoring, gene expression
 #' @importFrom stats na.omit rnorm
 #' @export
 TCSS_Calculate <- function (object, reference = ref_data, nbin=50, ctrl = 100, seed = 1) {
