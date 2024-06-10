@@ -11,7 +11,7 @@
 #' @import dplyr
 #' @examples
 #' # Example usage:
-#' # TCSS_Calculate()
+#' # TCSS_Calculate(exampleSample)
 #' @keywords T-cell state, scoring, gene expression
 #' @importFrom stats na.omit rnorm
 #' @export
