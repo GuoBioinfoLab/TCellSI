@@ -32,9 +32,9 @@ ResultScores <- TCSS_Calculate(expr)
 ```
 OtherScores <- CSS_Calculate‎(expr, reference = XXX, markers = XXX)
 ```
-#Forms of reference profile and markers look like:
+#The self-constructed reference profile file should contain log2-transformed, TPM-normalized gene expression data from RNA-seq or scRNA-seq. The format should include gene symbols in the first column and different cell states in the subsequent columns. The file must be in .txt format and separated by tabs. Forms of reference profile and markers look like:
 ```
-#reference The self-constructed reference profile file should contain log2-transformed, TPM-normalized gene expression data from RNA-seq or scRNA-seq. The format should include gene symbols in the first column and different cell states in the subsequent columns. The file must be in .txt format and separated by tabs.
+#reference 
 #            cell_state1 cell_state2 cell_state3
 # DDX11L1     0.32323232 0.54567463   0.32456323
 # WASH7P      0.82670591 1.89565638   1.40492732
