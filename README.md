@@ -1,4 +1,4 @@
-# TCellSI ![image](https://github.com/VyvyanYjm/TCellSI/blob/main/Logo.jpg)
+# TCellSI 
 T cell state identifier (TCellSI) is a tool to access eight distinct T cell states including Quiescence, Regulating, Proliferation, Helper, Cytotoxicity, Progenitor exhaustion, Terminal exhaustion, and Senescence. TCellSI provides a T cell state score (TCSS) for samples using specific marker gene sets and a compiled reference spectrum of T cell states from transcriptomic data. The major algorithm of TCellSI is shown as follows: 
 
 ![image](https://github.com/VyvyanYjm/TCellSI/blob/main/algorithm.jpg)
@@ -71,3 +71,4 @@ OtherScores <- CSS_Calculate‎(sample_expression, reference = XXX, markers = XX
 #$cell_state3
 #[1] "XXX"  "XXX"  "XXX" ...
 ```
+![image](https://github.com/VyvyanYjm/TCellSI/blob/main/Logo.jpg)
