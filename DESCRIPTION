@@ -1,6 +1,6 @@
 Package: TCellSI
 Type: Package
-Title: T-cell state identifier 
+Title: T Cell State Identifier 
 Version: 0.1.0
 Author@R: 
     c(person(given = "Vyvyan",
@@ -9,7 +9,7 @@ Author@R:
            email = "yangjingmin2021@163.com",
            comment = c(ORCID = "0009-0006-7126-9017")))
 Maintainer: <yangjingmin2021@163.com>
-Description: TCellSI is a tool to access the degree of eight distinct T-cell states including
+Description: TCellSI is a tool to access eight distinct T cell states including
     Quiescence, Regulating, Proliferation, Helper, Cytotoxicity, Progenitor exhaustion, Terminal exhaustion, and Senescence.
 License: MIT + file LICENSE
 Encoding: UTF-8
