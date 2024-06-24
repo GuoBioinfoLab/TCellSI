@@ -1,5 +1,5 @@
 #' @title TCSS_Calculate
-#' @description You can use this function to calculate scores for T-cell states.
+#' @description You can use this function to calculate scores for T cell states.
 #'
 #' @param object Sample expression
 #' @param reference Reference inputs
