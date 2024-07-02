@@ -9,7 +9,6 @@ You can install the development version of TCellSI by:
 ``` r
 # install.packages("devtools")
 devtools::install_github("GuoBioinfoLab/TCellSI")
-
 library(TCellSI)
 ```
 
