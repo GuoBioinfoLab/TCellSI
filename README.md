@@ -25,6 +25,7 @@ sample_expression <- TCellSI::exampleSample
 # 7SK          0.0c0000    0.000000   0.0000000
 # A1BG         1.907599    3.284418   4.0821248
 # A1BG-AS1     3.083914    2.021501   4.5169002
+
 ResultScores <- TCSS_Calculate(sample_expression) 
 ```
 #output:
