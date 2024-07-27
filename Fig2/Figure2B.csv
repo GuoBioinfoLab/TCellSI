@@ -1,0 +1,29 @@
+"Gene","Germline_Variant","Percentage1"
+"CD4 Teff","Quiescence",2.56
+"CD4 Teff","Cytotoxicity",94.87
+"CD4 Teff","Terminal_exhaustion",2.56
+"CD4 Temra","Senescence",100
+"CD4 Tn","Quiescence",100
+"CD8 Tcm","Cytotoxicity",95.12
+"CD8 Tcm","Senescence",4.88
+"CD8 Teff","Cytotoxicity",88.89
+"CD8 Teff","Senescence",11.11
+"CD8 Tem","Cytotoxicity",15.63
+"CD8 Tem","Senescence",1.28
+"CD8 Tem","Progenitor_exhaustion",0.43
+"CD8 Tem","Terminal_exhaustion",82.66
+"CD8 Temra","Cytotoxicity",0.69
+"CD8 Temra","Senescence",99.31
+"CD8 Tn","Quiescence",100
+"Tex","Cytotoxicity",7.51
+"Tex","Progenitor_exhaustion",0.61
+"Tex","Terminal_exhaustion",91.89
+"Th1/Th17/Tfh","Quiescence",2.46
+"Th1/Th17/Tfh","Helper",22.54
+"Th1/Th17/Tfh","Cytotoxicity",23.57
+"Th1/Th17/Tfh","Senescence",48.16
+"Th1/Th17/Tfh","Progenitor_exhaustion",0.2
+"Th1/Th17/Tfh","Terminal_exhaustion",3.07
+"Tprolif","Proliferation",83.33
+"Tprolif","Cytotoxicity",16.67
+"Treg","Regulating",100
