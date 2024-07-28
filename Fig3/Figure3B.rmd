@@ -1,0 +1,45 @@
+---
+title: "Figure3B.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+exh_df_wide <- read.csv("Figure3B.csv")
+p <- ggradar(exh_df_wide,
+  grid.min = 0, grid.max = 1, grid.mid = 0.5, centre.y = 0,
+  values.radar = c("0.0", "0.5", "1"), group.point.size = 0,
+  group.line.width = 1, fill = T, fill.alpha = 0.5, group.colours = c("#EABF00", "#2874C5"),
+  gridline.min.linetype = "dashed",
+  gridline.mid.linetype = "dashed",
+  gridline.max.linetype = "longdash",
+  gridline.max.colour = "#80B199",
+  gridline.mid.colour = "black",
+  background.circle.colour = "#F6F4D2",
+  background.circle.transparency = 1,
+  grid.line.width = 1.5, axis.line.colour = "black"
+) +
+  theme(
+    legend.position = "top",
+    plot.margin = unit(c(0, 0, 0, 0), "pt")
+  )
+```
