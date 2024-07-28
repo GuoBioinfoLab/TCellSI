@@ -1,0 +1,50 @@
+---
+title: "Figure5A.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+compaired <- list(c("Pre", "On"))
+sname <- c("Cytotoxicity", "Helper", "Proliferation", "Terminal_exhaustion")
+mycol <- c("#cf273c", "#5091c0") %>% rev()
+
+data <- read.csv("Figure5A.csv")
+FUN <- function(i) {
+  ggplot(data, aes_string(x = "Biopsy_Time", y = i, fill = "Biopsy_Time")) +
+    geom_half_violin(position = position_nudge(x = 0.25), side = "r", width = 0.5, color = "black", size = 0.75) +
+    stat_boxplot(geom = "errorbar", width = 0.2, size = 0.75) +
+    geom_boxplot(width = 0.4, size = 0.75, outlier.color = NA) +
+    stat_summary(
+      fun.y = "median", geom = "point", shape = 16,
+      size = 2, color = "white", position = position_dodge(1)
+    ) +
+    scale_fill_manual(values = mycol) +
+    theme_blue +
+    theme(legend.position = "none") +
+    labs(title = i, y = "TCSS", x = NULL) +
+    geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test, tip_length = 0) +
+    scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+}
+l <- lapply(sname, FUN)
+p1 <- cowplot::plot_grid(plotlist = l, nrow = 1, align = "hv")
+```

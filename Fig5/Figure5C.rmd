@@ -1,0 +1,64 @@
+---
+title: "Figure5C.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+data <- read.csv("Figure5C.csv")
+
+FUN <- function(i) {
+  df <- data %>%
+    dplyr::select(c("OS", "OS_time", i)) %>%
+    na.omit()
+  names(df) <- c("status", "time", "TCSS")
+  df$time <- df$time / 30
+  cutoff <- survminer::surv_cutpoint(df, time = "time", event = "status", variables = "TCSS", minprop = 0.1) %>% .$cutpoint
+  cutoff <- cutoff$cutpoint
+  df$group <- ifelse(df$TCSS >= cutoff, "High-TCSS", "Low-TCSS")
+
+  surv_df <- df
+  sfit <- survfit(Surv(time, status) ~ group, data = surv_df)
+  diff <- survdiff(formula = Surv(time, status) ~ group, data = surv_df, rho = 0)
+  pval <- pchisq(diff$chisq, length(diff$n) - 1, lower.tail = FALSE)
+  gg <- ggsurvplot(sfit,
+    data = surv_df,
+    size = 1,
+    risk.table = F,
+    conf.int = F,
+    risk.table.y.text = F,
+    palette = c("#A50026", "#006837"),
+    pval.method = T,
+    pval = ifelse(pval < 0.0001, "p < 0.0001", paste0("p = ", pval %>% round(digits = 4))),
+    ncensor.plot = F,
+    censor = T,
+    xlab = "Months",
+    ylab = "Overall Survival",
+    legend = "top",
+    legend.title = i, ggtheme = theme_blue,
+    legend.labs = c("High-TCSS", "Low-TCSS")
+  )
+  gg$plot + ggtitle(i) + theme(legend.background = element_blank(), legend.text = element_text(size = 12), legend.title = element_text(size = 12))
+}
+l <- lapply(sname, FUN)
+p3 <- cowplot::plot_grid(plotlist = l, nrow = 1, align = "hv")
+```
