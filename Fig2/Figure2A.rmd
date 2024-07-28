@@ -9,19 +9,26 @@ date: "2024-07-28"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r}
-library(tidyverse)
-library(tibble)
-library(data.table)
-library(magrittr)
-library(survival)
-library(paletteer)
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
 
 dat <- read.csv("Figure2A.csv")
 min_break <- 0
 max_break <- 1
 mid_break <- mean(c(min_break, max_break))
 
-source("mytheme.R")
 p <- ggplot(dat) +
   geom_hline(
     dat = data.frame(y = c(min_break, mid_break, max_break)),
@@ -41,5 +48,4 @@ p <- ggplot(dat) +
   scale_fill_gradientn("TCSS", colours = c("#0d3b66", "#faf0ca", "#f4d35e", "#ee964b", "#f95738")) +
   guides(fill = guide_colorsteps(barwidth = 15, barheight = .5, title.position = "top", title.hjust = .5, show.limits = F)) +
   theme(legend.position = "bottom")
-p
 ```
