@@ -1,0 +1,52 @@
+---
+title: "Figure2B.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+df <- read.csv("Figure2B.csv")
+p <- ggplot(df) +
+  geom_col(
+    aes(
+      x = 3,
+      y = Percentage1,
+      fill = TCSS
+    ),
+    width = 1.5,
+    color = "white"
+  ) +
+  facet_grid(. ~ Gene) +
+  coord_polar(theta = "y") +
+  xlim(c(1, 3.8))
+
+mycol <- paletteer_d("ggthemes::Tableau_10")
+p <- p + scale_fill_manual(values = mycol) +
+  theme_void() +
+  theme(
+    legend.position = "bottom",
+    strip.text.x = element_text(size = 14),
+    legend.title = element_text(size = 15),
+    legend.text = element_text(size = 14)
+  )
+p
+```
