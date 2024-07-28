@@ -1,0 +1,171 @@
+---
+title: "Figure3A.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+mycol <- paletteer_d("ggthemes::Tableau_20")
+
+data <- read.csv("Figure3A.csv")
+data$cell_type <- factor(data$cell_type,
+  levels = c("CD4 Tn", "CD8 Tn", "CD4 Tcm", "CD8 Tcm", "CD4 Tem", "CD8 Tem", "CD4 Trm", "CD8 Trm", "CD4 Th1", "CD4 Th17", "CD4 Tfh", "CD4 Treg", "CD4 Tfr", "CD8 Tex", "CD4 Temra", "CD8 Temra")
+)
+
+compaired <- list(c("CD8 Tn", "CD8 Tex"))
+senes_df <- data[which(data$score_type == "Quiescence"), ]
+p1 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Quiescence", y = "TCSS", x = NULL, x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+compaired <- list(c("CD4 Tn", "CD4 Th1"))
+senes_df <- data[which(data$score_type == "Helper"), ]
+p2 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Helper", y = "TCSS", x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+compaired <- list(c("CD8 Tcm", "CD8 Temra"))
+senes_df <- data[which(data$score_type == "Proliferation"), ]
+p3 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Proliferation", y = "TCSS", x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+compaired <- list(c("CD4 Tn", "CD4 Treg"))
+senes_df <- data[which(data$score_type == "Regulating"), ]
+p4 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Regulating", y = "TCSS", x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+compaired <- list(c("CD8 Tn", "CD8 Tem"))
+senes_df <- data[which(data$score_type == "Cytotoxicity"), ]
+p5 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Cytotoxicity", y = "TCSS", x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+compaired <- list(c("CD8 Tn", "CD8 Temra"))
+senes_df <- data[which(data$score_type == "Senescence"), ]
+p6 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Senescence", y = "TCSS", x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+compaired <- list(c("CD8 Tn", "CD8 Tex"))
+senes_df <- data[which(data$score_type == "Progenitor_exhaustion"), ]
+p7 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Progenitor exhaustion", y = "TCSS", x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+compaired <- list(c("CD8 Tn", "CD8 Tex"))
+senes_df <- data[which(data$score_type == "Terminal_exhaustion"), ]
+p8 <- ggplot(data.frame(senes_df), aes(x = cell_type, y = score, fill = cell_type)) +
+  geom_jitter(
+    width = 0.2,
+    height = 0,
+    size = 3,
+    shape = 21,
+    show.legend = FALSE, stroke = 0.4
+  ) +
+  scale_fill_manual(values = mycol) +
+  theme_blue +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black", size = 12), legend.position = "none") + 
+  labs(title = "Terminal exhaustion", y = "TCSS", x = NULL) +
+  geom_signif(comparisons = compaired, textsize = 8, vjust = 0.6, color = "black", map_signif_level = T, test = wilcox.test) +
+  scale_y_continuous(expand = expand_scale(add = c(0.1, 0.1)))
+
+p <- cowplot::plot_grid(p1, p2, p3, p4, p5, p6, p7, p8, align = "hv", nrow = 3)
+```

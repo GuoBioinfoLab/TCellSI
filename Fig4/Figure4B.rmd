@@ -1,0 +1,109 @@
+---
+title: "Figure4B.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+dt <- read.csv("Figure4B.csv")
+
+sname <- c("Quiescence", "Helper", "Proliferation", "Regulating", "Cytotoxicity", "Senescence", "Progenitor_exhaustion", "Terminal_exhaustion")
+df <- dt %>% arrange(dt$genes)
+names(df)[1] <- "G3"
+names(df)[2] <- "X"
+names(df)[3] <- "Value"
+df$X <- factor(df$X, levels = sname)
+
+df_sig <- df %>%
+  group_by(X) %>%
+  wilcox_test(Value ~ G3) %>%
+  adjust_pvalue() %>%
+  add_significance("p.adj") %>%
+  add_xy_position(x = "X")
+df_sig$p.adj.signif[which(df_sig$p.adj.signif == "****")] <- "***"
+df_sig$p.adj.signif[which(df_sig$p.adj.signif == "ns")] <- ""
+
+df$ID <- rep(c(1:8), each = nrow(df) / 8)
+df_lab <- df %>%
+  group_by(X) %>%
+  summarize(start = min(ID) + 1.5, end = max(ID) - 1.5) %>%
+  rowwise() %>%
+  mutate(title = mean(c(start, end)))
+df_lab$title <- 1:8
+
+df_bg <- df %>%
+  summarize(max = max(Value), min = min(Value))
+df_bg
+
+ang <- seq(
+  from = (360 / 8) / 1.5,
+  to = (1.5 * (360 / 8)) - 360,
+  length.out = 8
+)
+
+p <- df %>%
+  ggplot(aes(X, Value)) +
+  geom_rect(xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 1, fill = "#A0CBE8") +
+  geom_rect(xmin = 1.5, xmax = 2.5, ymin = 0, ymax = 1, fill = "#FFBE7D") +
+  geom_rect(xmin = 2.5, xmax = 3.5, ymin = 0, ymax = 1, fill = "#8CD17D") +
+  geom_rect(xmin = 3.5, xmax = 4.5, ymin = 0, ymax = 1, fill = "#F1CE63") +
+  geom_rect(xmin = 4.5, xmax = 5.5, ymin = 0, ymax = 1, fill = "#86BCB6") +
+  geom_rect(xmin = 5.5, xmax = 6.5, ymin = 0, ymax = 1, fill = "#FF9D9A") +
+  geom_rect(xmin = 6.5, xmax = 7.5, ymin = 0, ymax = 1, fill = "#FABFD2") +
+  geom_rect(xmin = 7.5, xmax = 8.5, ymin = 0, ymax = 1, fill = "#D7B5A6") +
+  geom_linerange(xmin = 0.5, xmax = 8.5, y = 0, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(xmin = 0.5, xmax = 8.5, y = 0.25, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(xmin = 0.5, xmax = 8.5, y = 0.5, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(xmin = 0.5, xmax = 8.5, y = 0.75, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(xmin = 0.5, xmax = 8.5, y = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(x = 1.5, ymin = 0, ymax = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(x = 2.5, ymin = 0, ymax = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(x = 3.5, ymin = 0, ymax = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(x = 4.5, ymin = 0, ymax = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(x = 5.5, ymin = 0, ymax = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(x = 6.5, ymin = 0, ymax = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_linerange(x = 7.5, ymin = 0, ymax = 1, lty = 2, color = "grey70", linewidth = 0.6) +
+  geom_boxplot(aes(fill = G3, color = G3),
+    position = position_dodge(0.8),
+    outlier.color = NA, linewidth = 1, width = 0.5
+  ) +
+  stat_summary(aes(fill = G3),
+    fun = median, geom = "point", size = 2, color = "white", show.legend = F,
+    position = position_dodge(0.8)
+  ) +
+  theme_void() +
+  theme(legend.position = "top") +
+  geom_rect(xmin = 0.5, xmax = 1.5, ymin = 1, ymax = 1.2, fill = "#4E79A7") +
+  geom_rect(xmin = 1.5, xmax = 2.5, ymin = 1, ymax = 1.2, fill = "#F28E2B") +
+  geom_rect(xmin = 2.5, xmax = 3.5, ymin = 1, ymax = 1.2, fill = "#59A14F") +
+  geom_rect(xmin = 3.5, xmax = 4.5, ymin = 1, ymax = 1.2, fill = "#B6992D") +
+  geom_rect(xmin = 4.5, xmax = 5.5, ymin = 1, ymax = 1.2, fill = "#499894") +
+  geom_rect(xmin = 5.5, xmax = 6.5, ymin = 1, ymax = 1.2, fill = "#E15759") +
+  geom_rect(xmin = 6.5, xmax = 7.5, ymin = 1, ymax = 1.2, fill = "#D37295") +
+  geom_rect(xmin = 7.5, xmax = 8.5, ymin = 1, ymax = 1.2, fill = "#9D7660") +
+  scale_fill_manual(values = mycol <- c("#EABF00", "#2874C5") %>% rev()) +
+  scale_color_manual(values = mycol <- c("#EABF00", "#2874C5") %>% rev()) +
+  theme(legend.position = "none")
+
+p2 <- p +
+  scale_y_continuous(limits = c(-0.1, 1.2)) + coord_polar(theta = "x")
+```
