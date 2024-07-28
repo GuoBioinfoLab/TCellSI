@@ -1,0 +1,148 @@
+---
+title: "Figure6A.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+df <- read.csv("Figure6A.csv")
+proj <- c("ACC", "BLCA", "BRCA", "CESC", "CHOL", "COAD", "DLBC", "ESCA", "GBM", "HNSC", "KICH", "KIRC", "KIRP", "LAML", "LGG", "LIHC", "LUAD", "LUSC", "MESO", "OV", "PAAD", "PCPG", "PRAD", "READ", "SARC", "SKCM", "STAD", "TGCT", "THCA", "THYM", "UCEC", "UCS", "UVM")
+
+g_es <- df[, c("sample", "Cytotoxicity", "Helper", "Proliferation", "Terminal_exhaustion")] %>%
+  column_to_rownames("sample") %>%
+  t() %>%
+  as.data.frame()
+terms <- rownames(g_es)
+
+FUN <- function(cancer) {
+  Data5 <- df %>% dplyr::filter(tissue == cancer)
+  Data5 <- Data5 %>% dplyr::select(sample, ImmuneScore_estimate)
+  res_df <- g_es[, Data5$sample]
+  FUN_cor <- function(term) {
+    temp_df <- res_df[term, ] %>%
+      t() %>%
+      as.data.frame() %>%
+      rownames_to_column("sample")
+    temp_df <- temp_df %>%
+      inner_join(Data5, by = "sample") %>%
+      column_to_rownames("sample")
+    dd <- cor.test(as.numeric(temp_df[, 1]), as.numeric(temp_df[, 2]), method = "spearman")
+    temp_df <- data.frame(cancer = cancer, term = term, cor = dd$estimate)
+    rownames(temp_df) <- NULL
+    return(temp_df)
+  }
+  temp_l <- lapply(terms, FUN_cor)
+  temp_df <- do.call(rbind, temp_l)
+  res <- temp_df
+  return(res)
+}
+
+l <- pbapply::pblapply(proj, FUN = FUN)
+data <- do.call(rbind, l)
+df_cor1 <- data %>% dplyr::select(1, 3, 2)
+names(df_cor1) <- c("Cancer_type", "value", "variable")
+
+df_cor1$variable <- factor(df_cor1$variable, levels = c("Cytotoxicity", "Helper", "Proliferation", "Terminal_exhaustion"))
+
+
+p1 <- ggplot(
+  df_cor1,
+  aes(x = variable, y = Cancer_type, fill = value)
+) +
+  geom_jjpie(aes(piefill = value),
+    width = 1.3, size = 0.5
+  ) +
+  coord_fixed() +
+  theme_blue +
+  scale_x_discrete(limits = c("Cytotoxicity", "Helper", "Proliferation", "Terminal_exhaustion")) +
+  scale_y_discrete(limits = proj %>% str_sort() %>% rev()) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, colour = "black", size = 12),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank()
+  ) +
+  labs(x = NULL, y = NULL) +
+  scale_fill_gradientn(colours = RColorBrewer::brewer.pal(11, "Spectral") %>% rev(), limits = c(-1, 1)) +
+  theme(legend.position = "none")
+
+df <- read.csv("Figure6A.csv")
+proj <- c("ACC", "BLCA", "BRCA", "CESC", "CHOL", "COAD", "DLBC", "ESCA", "GBM", "HNSC", "KICH", "KIRC", "KIRP", "LAML", "LGG", "LIHC", "LUAD", "LUSC", "MESO", "OV", "PAAD", "PCPG", "PRAD", "READ", "SARC", "SKCM", "STAD", "TGCT", "THCA", "THYM", "UCEC", "UCS", "UVM")
+
+g_es <- df[, c("sample", "Cytotoxicity", "Helper", "Proliferation", "Terminal_exhaustion")] %>%
+  column_to_rownames("sample") %>%
+  t() %>%
+  as.data.frame()
+terms <- rownames(g_es)
+
+FUN <- function(cancer) {
+  Data5 <- df %>% dplyr::filter(tissue == cancer)
+  Data5 <- Data5 %>% dplyr::select(sample, TumorPurity_estimate)
+  res_df <- g_es[, Data5$sample]
+  FUN_cor <- function(term) {
+    temp_df <- res_df[term, ] %>%
+      t() %>%
+      as.data.frame() %>%
+      rownames_to_column("sample")
+    temp_df <- temp_df %>%
+      inner_join(Data5, by = "sample") %>%
+      column_to_rownames("sample")
+    dd <- cor.test(as.numeric(temp_df[, 1]), as.numeric(temp_df[, 2]), method = "spearman")
+    temp_df <- data.frame(cancer = cancer, term = term, cor = dd$estimate)
+    rownames(temp_df) <- NULL
+    return(temp_df)
+  }
+  temp_l <- lapply(terms, FUN_cor)
+  temp_df <- do.call(rbind, temp_l)
+  res <- temp_df
+  return(res)
+}
+
+l <- pbapply::pblapply(proj, FUN = FUN)
+data <- do.call(rbind, l)
+df_cor1 <- data %>% dplyr::select(1, 3, 2)
+names(df_cor1) <- c("Cancer_type", "value", "variable")
+
+df_cor1$variable <- factor(df_cor1$variable, levels = c("Cytotoxicity", "Helper", "Proliferation", "Terminal_exhaustion"))
+
+
+p2 <- ggplot(
+  df_cor1,
+  aes(x = variable, y = Cancer_type, fill = value)
+) +
+  geom_jjpie(aes(piefill = value),
+    width = 1.3, size = 0.5
+  ) +
+  coord_fixed() +
+  theme_blue +
+  scale_x_discrete(limits = c("Cytotoxicity", "Helper", "Proliferation", "Terminal_exhaustion")) +
+  scale_y_discrete(limits = proj %>% str_sort() %>% rev()) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, colour = "black", size = 12),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank()
+  ) +
+  labs(x = NULL, y = NULL) +
+  scale_fill_gradientn(colours = RColorBrewer::brewer.pal(11, "Spectral") %>% rev(), limits = c(-1, 1)) +
+  theme(legend.position = "none")
+
+p <- cowplot::plot_grid(p1, p2, align = "hv", nrow = 1)
+```

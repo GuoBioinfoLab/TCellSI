@@ -1,0 +1,96 @@
+---
+title: "Figure6C.rmd"
+author: "Nan Zhang","Jing-Min Yang"
+output: html_document
+date: "2024-07-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(tibble))
+suppressMessages(library(data.table))
+suppressMessages(library(magrittr))
+suppressMessages(library(survival))
+suppressMessages(library(survminer))
+suppressMessages(library(paletteer))
+suppressMessages(library(ggsignif))
+suppressMessages(library(gghalves))
+suppressMessages(library(ggradar))
+suppressMessages(library(ggh4x))
+suppressMessages(library(rstatix))
+suppressMessages(library(jjPlot))
+source("mytheme.R")
+
+surv_expr <- read.csv("Figure6C.csv")
+
+FUN_cut <- function(abbr) {
+  surv_df <- surv_expr %>% dplyr::filter(tissue %in% abbr)
+  surv_df$time <- surv_df$time / 30
+  names(surv_df) %<>% str_replace_all("-", "_")
+  cutoff <- survminer::surv_cutpoint(surv_df, time = "time", event = "status", variables = "Cytotoxicity", minprop = 0.1) %>% .$cutpoint
+  cutoff <- cutoff$cutpoint
+  surv_df$group <- ifelse(surv_df$Cytotoxicity >= cutoff, "High", "Low")
+  surv_df$group <- factor(surv_df$group, levels = c("Low", "High"))
+  Sur <- Surv(surv_df$time, surv_df$status)
+  gcox <- coxph(Sur ~ group, data = surv_df)
+  coxSummary <- summary(gcox)
+  res <- data.frame(
+    proj = abbr, HR = coxSummary$coefficients[, "exp(coef)"],
+    z = coxSummary$coefficients[, "z"],
+    pvalue = coxSummary$coefficients[, "Pr(>|z|)"],
+    lower = coxSummary$conf.int[, 3],
+    upper = coxSummary$conf.int[, 4], n = nrow(surv_df)
+  )
+  return(res)
+}
+cancer <- c("ACC", "BLCA", "BRCA", "CESC", "CHOL", "COAD", "DLBC", "ESCA", "GBM", "HNSC", "KICH", "KIRC", "KIRP", "LAML", "LGG", "LIHC", "LUAD", "LUSC", "MESO", "OV", "PAAD", "PCPG", "PRAD", "READ", "SARC", "SKCM", "STAD", "TGCT", "THCA", "THYM", "UCEC", "UCS", "UVM")
+
+l <- lapply(cancer %>% str_sort(), FUN = function(i) {
+  try(FUN_cut(i), TRUE)
+})
+input <- do.call(rbind, l)
+
+input2 <- input %>%
+  dplyr::filter(pvalue < 0.05) %>%
+  arrange(pvalue) %>%
+  dplyr::slice(1:20)
+input2 <- input2 %>% arrange(proj)
+
+FUN <- function(abbr) {
+  surv_df <- surv_expr %>% dplyr::filter(tissue %in% abbr)
+  df <- surv_df %>% column_to_rownames("sample")
+  names(df) <- c("status", "time", "TCSS")
+  df$time <- df$time / 30
+  cutoff <- survminer::surv_cutpoint(df, time = "time", event = "status", variables = "TCSS", minprop = 0.1) %>% .$cutpoint
+  cutoff <- cutoff$cutpoint
+  df$group <- ifelse(df$TCSS >= cutoff, "High", "Low")
+
+  surv_df <- df
+  sfit <- survfit(Surv(time, status) ~ group, data = surv_df)
+  diff <- survdiff(formula = Surv(time, status) ~ group, data = surv_df, rho = 0)
+  pval <- pchisq(diff$chisq, length(diff$n) - 1, lower.tail = FALSE)
+  gg <- ggsurvplot(sfit,
+    data = surv_df,
+    size = 1,
+    risk.table = F,
+    conf.int = F,
+    risk.table.y.text = F,
+    palette = c("#A50026", "#006837"),
+    pval.method = T,
+    pval = ifelse(pval < 0.0001, "p < 0.0001", paste0("p = ", pval %>% format(digits = 2, scientific = F))),
+    ncensor.plot = F,
+    censor = T,
+    xlab = "Months",
+    ylab = "Overall Survival",
+    legend = "top",
+    legend.title = "", ggtheme = theme_blue,
+    legend.labs = c("High-TCSS", "Low-TCSS")
+  )
+  gg$plot + ggtitle(abbr) + theme(legend.position = "none", legend.background = element_blank(), legend.text = element_text(size = 12), legend.title = element_text(size = 12))
+}
+l <- lapply(input2$proj, FUN)
+p3 <- cowplot::plot_grid(plotlist = l, nrow = 4, align = "hv")
+```
