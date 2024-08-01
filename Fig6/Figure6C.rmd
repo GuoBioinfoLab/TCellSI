@@ -1,6 +1,6 @@
 ---
-title: "Figure6C.rmd"
-author: "Nan Zhang","Jing-Min Yang"
+title: "Figure6C"
+author: "Nan Zhang", "Jing-Min Yang"
 output: html_document
 date: "2024-07-28"
 ---
@@ -8,6 +8,7 @@ date: "2024-07-28"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ```{r}
 suppressMessages(library(tidyverse))
 suppressMessages(library(tibble))
