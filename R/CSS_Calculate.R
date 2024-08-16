@@ -13,7 +13,7 @@
 #' @importFrom stats na.omit rnorm
 #' @export
 
-CSS_Calculate <- function(object, reference, markers, nbin = 50, ctrl = 100, seed = 1) {
+CSS_Calculate <- function(object, ref = TRUE, reference = NULL, markers, nbin = 50, ctrl = 100, seed = 1) {
   set.seed(seed = seed)
   all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
   all_sample_TPM1 <- apply(object, 2, function(i) {
@@ -21,7 +21,7 @@ CSS_Calculate <- function(object, reference, markers, nbin = 50, ctrl = 100, see
   })
 
   features.scores.df <- as.data.frame(dplyr::bind_rows(lapply(seq_len(length(markers)), function(k) {
-    message(paste0("Calculating of ", names(markers)[k]), " state : ( ", k, "/", length(markers), " )")
+    message(paste0("Calculating ", names(markers)[k]), " state : ( ", k, "/", length(markers), " )")
     features <- markers[[k]]
     missing_features_input_sample <- setdiff(features, rownames(all_sample_TPM1))
     if (length(missing_features_input_sample) > 0) {
@@ -34,20 +34,26 @@ CSS_Calculate <- function(object, reference, markers, nbin = 50, ctrl = 100, see
       )
     }
     features <- intersect(features, rownames(all_sample_TPM1))
-    missing_features_ref_data <- setdiff(features, rownames(x = reference))
-    if (length(x = missing_features_ref_data) > 0) {
-      warning("The following features are not present in the reference: ",
-        paste(missing_features_ref_data, collapse = ", "), ifelse(test = FALSE,
-          yes = ", attempting to find updated synonyms",
-          no = ", not searching for symbol synonyms"
-        ),
-        call. = FALSE, immediate. = TRUE
-      )
+    
+    if (ref) {
+      # Perform reference-related calculations only if ref = TRUE
+      missing_features_ref_data <- setdiff(features, rownames(reference))
+      if (length(x = missing_features_ref_data) > 0) {
+        warning("The following features are not present in the reference: ",
+          paste(missing_features_ref_data, collapse = ", "), ifelse(test = FALSE,
+            yes = ", attempting to find updated synonyms",
+            no = ", not searching for symbol synonyms"
+          ),
+          call. = FALSE, immediate. = TRUE
+        )
+      }
+      features <- intersect(features, rownames(reference))
     }
-    features <- intersect(features, rownames(reference))
+    
     if (length(features) < 3) {
-      stop("The number of features less than 3")
+      stop("The number of features is less than 3")
     }
+    
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
     features.scores.vec <- pbapply::pbsapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
@@ -65,17 +71,23 @@ CSS_Calculate <- function(object, reference, markers, nbin = 50, ctrl = 100, see
       features.scores.use <- mean(feature.score) - mean(ctrl.score)
       return(features.scores.use)
     })
-    features_sample <- all_sample_TPM1[features, ]
-    features_ref <- reference[features, names(markers)[k]]
-    div_percent <- features_sample / features_ref
-    flag_lower <- (features_sample - features_ref) < 0
-    number_lower <- colSums(flag_lower)
-    percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
-      ifelse(number_lower[i] == 0, 1, sum(div_percent[, i][flag_lower[, i]], (length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
-    })
-    features.scores.vec <- features.scores.vec * percentage
+    
+    if (ref) {
+      features_sample <- all_sample_TPM1[features, ]
+      features_ref <- reference[features, names(markers)[k]]
+      div_percent <- features_sample / features_ref
+      flag_lower <- (features_sample - features_ref) < 0
+      number_lower <- colSums(flag_lower)
+      percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
+        ifelse(number_lower[i] == 0, 1, sum(div_percent[, i][flag_lower[, i]], (length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
+      })
+      features.scores.vec <- features.scores.vec * percentage
+    }
+    
     return(features.scores.vec)
   })))
+  
   rownames(features.scores.df) <- names(markers)
   return(features.scores.df)
 }
+
