@@ -44,11 +44,12 @@ The output of the function is a data.frame with TCSS metrics, where each row cor
 # Senescence              0.5921543   0.5725185   0.2896508
 ```
 
-#If you want to apply this method to other cell states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your cell states. You can then calculate the scores for your cell states using the following function.
+#If you want to apply this method to other cell states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your cell states. You can then calculate the scores for your cell states using the following function. If you choose not to provide a reference expression spectrum but to do the calculation directly, you can use the parameter ref=FALSE.
 
 ```
-OtherScores <- CSS_Calculate‎(sample_expression, reference = XXX, markers = XXX)
+OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, markers = XXX)
 ```
+
 #Forms of reference and markers look like:
 
 ```
