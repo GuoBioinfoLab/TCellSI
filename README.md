@@ -73,8 +73,9 @@ OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, ma
 #$cell_state3
 #[1] "XXX"  "XXX"  "XXX" ...
 ```
+#  pseudobulk creation tutorial for single-cell data analysis
+#How to create pseudobulk samples from single cell data ? If you want to do this, you should prepare an expression data, which should be either log2(TPM+1) or normalized single-cell data. In this data, each row represents a gene and each column represents a cell ID (see example as follows). Also, you should prepare a single-cell annotation file, which includes columns of cell annotation and cells ID in expression file (see example as follows). 
 
-# How to create pseudobulk samples from single cell data ? If you want to do this, you should prepare an expression data, which should be either log2(TPM+1) or normalized single-cell data. In this data, each row represents a gene and each column represents a cell ID (see example as follows). Also, you should prepare a single-cell annotation file, which includes columns of cell annotation and cells ID in expression file (see example as follows). 
 ```
 # expression data
 #             NP710.20180123  NP711.20180123  NP71.20180123 ...
