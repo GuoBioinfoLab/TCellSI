@@ -90,7 +90,7 @@ OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, ma
 #             NTR57.20180123  CD4_C01_CCR7 
 #             ...
 ```
-# Then, you can use the following function to get pseudobulk samples.
+#Then, you can use the following function to get pseudobulk samples.
 ```
 pseudo_bulk <- create_pseudo_bulk(
   annotation_data = XXX, 
