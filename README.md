@@ -102,7 +102,7 @@ pseudo_bulk <- create_pseudo_bulk(
   sampling_rate = 0.6 # percentage of cells downsampled, default is 0.6
 )
 # see example of the result
-# pseudo_bulk
+# pseudo_bulk, each column represents a newly pseudobulk samples, each row represents a gene.
 #         CD4_C01_CCR7_bulk   CD4_C01_CCR7_bulk.1  CD4_C01_CCR7_bulk.2
 #A1BG      0.495165739          0.67542360           0.737122107
 #NAT2      0.006033183          0.00337272           0.007104438
