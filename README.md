@@ -73,9 +73,19 @@ OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, ma
 #$cell_state3
 #[1] "XXX"  "XXX"  "XXX" ...
 ```
+#  How to use TCellSI for scRNA-seq data?
+#You can extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object, and further convert it to the TPM format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
+```
+scRNA_scores <- TCSS_Calculate(sample_scRNA)
+```
+#Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
+```
+Idents(seurat_obj) <- "TCSS"  #the name of the column in which the categorical value is added to the metadata object
+DimPlot(seurat_obj, reduction ="umap",label=TRUE,label.size = 5,repel = TRUE) #viewing the distribution of scores in a umap
+```
+#In addition, if you have an single-cell population annotation, you can create pseudobulk samples and then calculate the state scores for each samples, which can reduce the problem of drop-out in the single-cell data that leads to less accurate results. The creation of the pseudobulk is as follows:
 #  pseudobulk creation tutorial for single-cell data analysis
 #How to create pseudobulk samples from single cell data ? If you want to do this, you should prepare an expression data, which should be either log2(TPM+1) or normalized single-cell data. In this data, each row represents a gene and each column represents a cell ID (see example as follows). Also, you should prepare a single-cell annotation file, which includes columns of cell annotation and cell ID in expression file (see example as follows). 
-
 ```
 # expression data
 #             NP710.20180123  NP711.20180123  NP71.20180123 ...
@@ -101,24 +111,13 @@ pseudo_bulk <- create_pseudo_bulk(
   factor = 5, # number of samples for downsampling, default is 5
   sampling_rate = 0.6 # percentage of cells downsampled, default is 0.6
 ) 
-# see example of the result
+# see examples of the result
 # pseudo_bulk, each column represents a newly pseudobulk samples, each row represents a gene.
 #         CD4_C01_CCR7_bulk   CD4_C01_CCR7_bulk.1  CD4_C01_CCR7_bulk.2
 #A1BG      0.495165739          0.67542360           0.737122107
 #NAT2      0.006033183          0.00337272           0.007104438
 #ADA       0.855647562          1.06058830           0.898952625
 ```
-#  How to use TCellSI for scRNA-seq data?
-#You can extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object, and further convert it to the TPM format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
-```
-scRNA_scores <- TCSS_Calculate(sample_scRNA)
-```
-#Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
-```
-Idents(seurat_obj) <- "TCSS"  #the name of the column in which the categorical value is added to the metadata object
-DimPlot(seurat_obj, reduction ="umap",label=TRUE,label.size = 5,repel = TRUE) #viewing the distribution of scores in a umap
-```
-
 
 
 
