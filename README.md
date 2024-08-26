@@ -74,7 +74,7 @@ OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, ma
 #[1] "XXX"  "XXX"  "XXX" ...
 ```
 ## How to use TCellSI for scRNA-seq data?
-#You can extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object, and further convert it to the TPM format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
+#You can extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object, and further convert it to the log(TPM +1) format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
 ```
 scRNA_scores <- TCSS_Calculate(sample_scRNA)
 ```
