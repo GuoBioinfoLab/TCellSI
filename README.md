@@ -74,7 +74,7 @@ Forms of reference and markers look like:
 #[1] "XXX"  "XXX"  "XXX" ...
 ```
 ## How to use TCellSI for scRNA-seq data?
-TCellSI still shows excellent results in the calculation of single-cell data and can assist in 'single-cell annotation'.
+TCellSI still shows excellent results in the calculation of single-cell data and can assist in `single-cell annotation`.
 
 In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. And further convert it to the log(TPM +1) format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
 ```
