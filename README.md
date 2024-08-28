@@ -74,7 +74,7 @@ OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, ma
 #[1] "XXX"  "XXX"  "XXX" ...
 ```
 ## How to use TCellSI for scRNA-seq data?
-#TCellSI still shows excellent results in the calculation of single-cell data and can assist in single-cell annotation.
+#TCellSI still shows excellent results in the calculation of single-cell data and can assist in 'single-cell annotation'.
 
 #In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. And further convert it to the log(TPM +1) format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
 ```
@@ -120,7 +120,9 @@ pseudo_bulk <- create_pseudo_bulk(
 #NAT2      0.006033183          0.00337272           0.007104438
 #ADA       0.855647562          1.06058830           0.898952625
 ```
-
+## Credit
+Please cite our paper if TCellSI helps you.
+*Yang, Jing‐Min, NanZhang, Tao Luo, Mei Yang, Wen‐Kang Shen,Zhen‐Lin Tan, Yun Xia, et al. 2024. "TCellSI: aNovel Method for T Cell State Assessment and ItsApplications in Immune Environment Prediction."iMeta e231. https://doi.org/10.1002/imt2.231
 
 
 ![image](https://github.com/VyvyanYjm/TCellSI/blob/main/Logo.jpg)
