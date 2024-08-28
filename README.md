@@ -14,7 +14,7 @@ library(TCellSI)
 
 ## Example tutorial
 
-sample_expression: Complete gene expression data.frame in TPM format by log2-transformed RNA-seq data.
+Sample_expression: Complete gene expression data.frame in TPM format by log2-transformed RNA-seq data.
 
 ```
 sample_expression <- TCellSI::exampleSample
@@ -28,7 +28,7 @@ sample_expression <- TCellSI::exampleSample
 # ...
 ResultScores <- TCSS_Calculate(sample_expression) 
 ```
-output:
+Output:
 The output of the function is a data.frame with TCSS metrics, where each row corresponds to a T cell state and each column represents a sample name.  
 
 ```
