@@ -122,7 +122,8 @@ pseudo_bulk <- create_pseudo_bulk(
 ```
 ## Credit
 Please cite our paper if TCellSI helps you.
-*Yang, Jing‐Min, NanZhang, Tao Luo, Mei Yang, Wen‐Kang Shen,Zhen‐Lin Tan, Yun Xia, et al. 2024. "TCellSI: aNovel Method for T Cell State Assessment and ItsApplications in Immune Environment Prediction."iMeta e231. https://doi.org/10.1002/imt2.231
+
+* Yang, Jing‐Min, NanZhang, Tao Luo, Mei Yang, Wen‐Kang Shen,Zhen‐Lin Tan, Yun Xia, et al. 2024. "TCellSI: aNovel Method for T Cell State Assessment and ItsApplications in Immune Environment Prediction."iMeta e231. https://doi.org/10.1002/imt2.231
 
 
 ![image](https://github.com/VyvyanYjm/TCellSI/blob/main/Logo.jpg)
