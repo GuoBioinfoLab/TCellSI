@@ -14,7 +14,7 @@ library(TCellSI)
 
 ## Example tutorial
 
-#sample_expression: Complete gene expression data.frame in TPM format by log2-transformed RNA-seq data.
+sample_expression: Complete gene expression data.frame in TPM format by log2-transformed RNA-seq data.
 
 ```
 sample_expression <- TCellSI::exampleSample
@@ -28,7 +28,7 @@ sample_expression <- TCellSI::exampleSample
 # ...
 ResultScores <- TCSS_Calculate(sample_expression) 
 ```
-#output:
+output:
 The output of the function is a data.frame with TCSS metrics, where each row corresponds to a T cell state and each column represents a sample name.  
 
 ```
@@ -44,13 +44,13 @@ The output of the function is a data.frame with TCSS metrics, where each row cor
 # Senescence              0.5921543   0.5725185   0.2896508
 ```
 
-#If you want to apply this method to other cell states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your cell states. You can then calculate the scores for your cell states using the following function. If you choose not to provide a reference expression spectrum but to do the calculation directly, you can use the parameter ref=FALSE and do not need to provide the reference parameter.
+If you want to apply this method to other cell states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your cell states. You can then calculate the scores for your cell states using the following function. If you choose not to provide a reference expression spectrum but to do the calculation directly, you can use the parameter ref=FALSE and do not need to provide the reference parameter.
 
 ```
 OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, markers = XXX)
 ```
 
-#Forms of reference and markers look like:
+Forms of reference and markers look like:
 
 ```
 #reference
@@ -74,20 +74,20 @@ OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, ma
 #[1] "XXX"  "XXX"  "XXX" ...
 ```
 ## How to use TCellSI for scRNA-seq data?
-#TCellSI still shows excellent results in the calculation of single-cell data and can assist in 'single-cell annotation'.
+TCellSI still shows excellent results in the calculation of single-cell data and can assist in 'single-cell annotation'.
 
-#In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. And further convert it to the log(TPM +1) format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
+In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. And further convert it to the log(TPM +1) format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
 ```
 scRNA_scores <- TCSS_Calculate(sample_scRNA)
 ```
-#Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
+Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
 ```
 Idents(seurat_obj) <- "TCSS"  #the name of the column in which the categorical value is added to the metadata object
 DimPlot(seurat_obj, reduction ="umap",label=TRUE,label.size = 5,repel = TRUE) #viewing the distribution of scores in a umap
 ```
-#In addition, if you have an single-cell population annotation, you can create pseudobulk samples and then calculate the state scores for each samples, which can reduce the problem of drop-out in the single-cell data that leads to less accurate results. The creation of the pseudobulk is as follows:
+In addition, if you have an single-cell population annotation, you can create pseudobulk samples and then calculate the state scores for each samples, which can reduce the problem of drop-out in the single-cell data that leads to less accurate results. The creation of the pseudobulk is as follows:
 ## Pseudobulk creation tutorial for single-cell data analysis
-#How to create pseudobulk samples from single cell data ? If you want to do this, you should prepare an expression data, which should be either log2(TPM+1) or normalized single-cell data. In this data, each row represents a gene and each column represents a cell ID (see example as follows). Also, you should prepare a single-cell annotation file, which includes columns of cell annotation and cell ID in expression file (see example as follows). 
+How to create pseudobulk samples from single cell data ? If you want to do this, you should prepare an expression data, which should be either log2(TPM+1) or normalized single-cell data. In this data, each row represents a gene and each column represents a cell ID (see example as follows). Also, you should prepare a single-cell annotation file, which includes columns of cell annotation and cell ID in expression file (see example as follows). 
 ```
 # expression data
 #             NP710.20180123  NP711.20180123  NP71.20180123 ...
@@ -102,7 +102,7 @@ DimPlot(seurat_obj, reduction ="umap",label=TRUE,label.size = 5,repel = TRUE) #v
 #             NTR57.20180123  CD4_C01_CCR7 
 #             ...
 ```
-#Then, you can use the following function to get pseudobulk samples.
+Then, you can use the following function to get pseudobulk samples.
 ```
 pseudo_bulk <- create_pseudo_bulk(
   annotation_data = XXX, 
