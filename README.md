@@ -118,6 +118,7 @@ pseudo_bulk <- create_pseudo_bulk(
 #A1BG      0.495165739          0.67542360           0.737122107
 #NAT2      0.006033183          0.00337272           0.007104438
 #ADA       0.855647562          1.06058830           0.898952625
+Result <- TCSS_Calculate(pseudo_bulk)
 ```
 ## Credit
 Please cite our paper if TCellSI is helpful.
