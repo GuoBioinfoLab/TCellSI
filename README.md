@@ -82,8 +82,7 @@ scRNA_scores <- TCSS_Calculate(sample_scRNA)
 ```
 Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
 ```
-Idents(seurat_obj) <- "TCSS"  #the name of the column in which the categorical value is added to the metadata object
-DimPlot(seurat_obj, reduction ="umap",label=TRUE,label.size = 5,repel = TRUE) #viewing the distribution of scores in a umap
+FeaturePlot(object = sce2, features = "TCSS")  #viewing the distribution of scores in a umap; "TCSS" is the name of the column in which the categorical value is added to the metadata object
 ```
 In addition, if you have an single-cell population annotation, you can create pseudobulk samples and then calculate the state scores for each samples, which can reduce the problem of drop-out in the single-cell data that leads to less accurate results. The creation of the pseudobulk is as follows:
 ## Pseudobulk creation tutorial for single-cell data analysis
