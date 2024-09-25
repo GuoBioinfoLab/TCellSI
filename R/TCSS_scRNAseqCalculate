@@ -1,4 +1,27 @@
-TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1) {
+#' @title TCSS_scRNAseqCalculate
+#' @description You can use this function to calculate scores for T cell states.
+#'
+#' @param object Sample expression
+#' @param reference Reference inputs
+#' @param nbin How many gene bins
+#' @param ctrl How many genes to select from each bins
+#' @param seed Random number seed set
+#' @param cores Parallel computing core count settings
+#' @return features.scores.df
+#' @import ggplot2
+#' @import dplyr
+#' @import parallel
+#' @importFrom stats na.omit rnorm
+#' @export
+#' @examples
+#'
+#' # Example usage:
+#' \donttest{
+#' sample_expression <- TCellSI::exampleSample
+#' TCSS_scRNAseqCalculate(sample_expression)
+#' }
+
+TCSS_scRNAseqCalculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1, cores = 4) {
   set.seed(seed = seed)
   all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
   all_sample_TPM1 <- apply(object, 2, function(i) {
@@ -41,7 +64,7 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       stop("The number of features less than 3")
     }
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
-    features.scores.vec <- pbapply::pbsapply(seq_len(ncol(all_sample_TPM2)), function(i) {
+    features.scores.vec <- mclapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
       data.avg <- all_sample_TPM2[, i]
       data.avg <- sort(data.avg)
@@ -56,7 +79,8 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       ctrl.score <- sort(features.use)[1:length(features.exp)]
       features.scores.use <- mean(feature.score) - mean(ctrl.score)
       return(features.scores.use)
-    })
+    }, mc.cores = cores) 
+    features.scores.vec <- unlist(features.scores.vec)
     features_sample <- all_sample_TPM1[features, ]
     features_ref <- reference[features, names(markers)[k]]
     div_percent <- features_sample / features_ref
