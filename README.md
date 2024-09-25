@@ -26,7 +26,7 @@ sample_expression <- TCellSI::exampleSample
 # A1BG         1.907599    3.284418   4.0821248
 # A1BG-AS1     3.083914    2.021501   4.5169002
 # ...
-ResultScores <- TCSS_Calculate(sample_expression) 
+ResultScores <- TCellSI::TCSS_Calculate(sample_expression) 
 ```
 Output:
 The output of the function is a data.frame with TCSS metrics, where each row corresponds to a T cell state and each column represents a sample name.  
@@ -47,7 +47,7 @@ The output of the function is a data.frame with TCSS metrics, where each row cor
 If you want to apply this method to other cell states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your cell states. You can then calculate the scores for your cell states using the following function. If you choose not to provide a reference expression spectrum but to do the calculation directly, you can use the parameter ref=FALSE and do not need to provide the reference parameter.
 
 ```
-OtherScores <- CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, markers = XXX)
+OtherScores <- TCellSI::CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, markers = XXX)
 ```
 
 Forms of reference and markers look like:
@@ -78,7 +78,7 @@ TCellSI still shows excellent results in the calculation of single-cell data and
 
 In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. And further convert it to the log(TPM +1) format or use other scaled method. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
 ```
-scRNA_scores <- TCSS_Calculate(sample_scRNA)
+scRNA_scores <- TCellSI::TCSS_Calculate(sample_scRNA)
 ```
 Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
 ```
@@ -103,7 +103,7 @@ How to create pseudobulk samples from single cell data ? If you want to do this,
 ```
 Then, you can use the following function to get pseudobulk samples.
 ```
-pseudo_bulk <- create_pseudo_bulk(
+pseudo_bulk <- TCellSI::create_pseudo_bulk(
   annotation_data = XXX, 
   expression_data = XXX, 
   cluster_col = "annotation", # the column names of annotation in single-cell annotation file
