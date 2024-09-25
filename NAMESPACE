@@ -2,6 +2,7 @@
 
 export(TCSS_Calculate)
 export(CSS_Calculate)
+export(TCSS_scRNAseqCalculate)
 import(dplyr)
 import(ggplot2)
 importFrom(stats,na.omit)
