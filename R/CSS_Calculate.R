@@ -34,7 +34,6 @@ CSS_Calculate <- function(object, ref = TRUE, reference = NULL, markers, nbin = 
       )
     }
     features <- intersect(features, rownames(all_sample_TPM1))
-    
     if (ref) {
       # Perform reference-related calculations only if ref = TRUE
       missing_features_ref_data <- setdiff(features, rownames(reference))
@@ -49,11 +48,9 @@ CSS_Calculate <- function(object, ref = TRUE, reference = NULL, markers, nbin = 
       }
       features <- intersect(features, rownames(reference))
     }
-    
     if (length(features) < 3) {
       stop("The number of features is less than 3")
     }
-    
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
     features.scores.vec <- pbapply::pbsapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
@@ -71,7 +68,6 @@ CSS_Calculate <- function(object, ref = TRUE, reference = NULL, markers, nbin = 
       features.scores.use <- mean(feature.score) - mean(ctrl.score)
       return(features.scores.use)
     })
-    
     if (ref) {
       features_sample <- all_sample_TPM1[features, ]
       features_ref <- reference[features, names(markers)[k]]
@@ -83,7 +79,7 @@ CSS_Calculate <- function(object, ref = TRUE, reference = NULL, markers, nbin = 
       })
       features.scores.vec <- features.scores.vec * percentage
     }
-    
+    features.scores.vec <- setNames(features.scores.vec, colnames(all_sample_TPM1))
     return(features.scores.vec)
   })))
   
