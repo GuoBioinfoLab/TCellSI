@@ -19,7 +19,6 @@ CSS_Calculate <- function(object, ref = TRUE, reference = NULL, markers, nbin = 
   all_sample_TPM1 <- apply(object, 2, function(i) {
     return(i * all_sample_HK / mean(na.omit(i[HKgenes])))
   })
-
   features.scores.df <- as.data.frame(dplyr::bind_rows(lapply(seq_len(length(markers)), function(k) {
     message(paste0("Calculating ", names(markers)[k]), " state : ( ", k, "/", length(markers), " )")
     features <- markers[[k]]
@@ -82,7 +81,6 @@ CSS_Calculate <- function(object, ref = TRUE, reference = NULL, markers, nbin = 
     features.scores.vec <- setNames(features.scores.vec, colnames(all_sample_TPM1))
     return(features.scores.vec)
   })))
-  
   rownames(features.scores.df) <- names(markers)
   return(features.scores.df)
 }
