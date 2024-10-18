@@ -76,7 +76,7 @@ Forms of reference and markers look like:
 ## How to use TCellSI for scRNA-seq data?
 TCellSI still shows excellent results in the calculation of single-cell data and can assist in `single-cell annotation`.
 
-In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. You can use the count data directly to do the calculations of TCellSI. If the results are unsatisfactory, we suggested to convert it to the log(TPM +1) format or use other scaled method. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data.
+In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. You can use the count data directly to do the calculations of TCellSI. If the results are unsatisfactory, we suggested to convert it to the log(TPM +1) format or use other scaled method. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data. And recommended 0-1 normalization of calculation results.
 ```
 scRNA_scores <- TCellSI::TCSS_scRNAseqCalculate(sample_scRNA,core= XXX ) # core: default value is 4
 ```
