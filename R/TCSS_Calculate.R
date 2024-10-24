@@ -83,6 +83,7 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
     features.scores.vec <- unlist(features.scores.vec)
     return(as.data.frame(t(features.scores.vec)))
   })))
+  colnames(features.scores.df) <- colnames(object)
   rownames(features.scores.df) <- names(markers)
   if (ref) {  # 如果 ref = TRUE，执行 reference 相关的计算
     for (i in c(2, 4:6)) {
