@@ -26,7 +26,7 @@ sample_expression <- TCellSI::exampleSample
 # A1BG         1.907599    3.284418   4.0821248
 # A1BG-AS1     3.083914    2.021501   4.5169002
 # ...
-ResultScores <- TCellSI::TCSS_Calculate(sample_expression) 
+ResultScores <- TCellSI::TCSS_Calculate(sample_expression, ref = TRUE) (Optionally, ref = FALSE)
 ```
 Output:
 The output of the function is a data.frame with TCSS metrics, where each row corresponds to a T cell state and each column represents a sample name.  
