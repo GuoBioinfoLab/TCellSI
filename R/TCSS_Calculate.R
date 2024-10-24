@@ -47,7 +47,7 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       )
     }
     features <- intersect(features, rownames(all_sample_TPM1))
-    if (ref) {
+    if (ref) {  # 判断是否使用 reference 数据
       missing_features_ref_data <- setdiff(features, rownames(reference))
       if (length(missing_features_ref_data) > 0) {
         warning("The following features are not present in the reference: ",
@@ -64,7 +64,7 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       }
     }
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
-    features.scores.vec <- pbapply::pbsapply(seq_len(ncol(all_sample_TPM2)), function(i) {
+    features.scores.vec <- sapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
       data.avg <- all_sample_TPM2[, i]
       data.avg <- sort(data.avg)
@@ -80,22 +80,11 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       features.scores.use <- mean(feature.score) - mean(ctrl.score)
       return(features.scores.use)
     })
-    if (ref) {
-      features_sample <- all_sample_TPM1[features, ]
-      features_ref <- reference[features, names(markers)[k]]
-      div_percent <- features_sample / features_ref
-      flag_lower <- (features_sample - features_ref) < 0
-      number_lower <- colSums(flag_lower)
-      percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
-        ifelse(number_lower[i] == 0, 1, sum(div_percent[, i][flag_lower[, i]], (length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
-      })
-      features.scores.vec <- features.scores.vec * percentage
-    }
-    return(features.scores.vec)
+    features.scores.vec <- unlist(features.scores.vec)
+    return(as.data.frame(t(features.scores.vec)))
   })))
-  
   rownames(features.scores.df) <- names(markers)
-  if (ref) {
+  if (ref) {  # 如果 ref = TRUE，执行 reference 相关的计算
     for (i in c(2, 4:6)) {
       for (j in 1:ncol(all_sample_TPM1)) {
         pq <- as.numeric(reference["CD4", names(markers)[i]])
@@ -108,7 +97,6 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       }
     }
   }
-  
   vec <- sapply(seq_len(ncol(features.scores.df)), function(i) {
     max(features.scores.df[4, i], features.scores.df[5, i], features.scores.df[6, i])
   })
