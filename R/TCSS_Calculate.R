@@ -19,7 +19,7 @@
 #' TCSS_Calculate(sample_expression)
 #' }
 
-TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1) {
+TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1, ref = TRUE) {
   set.seed(seed = seed)
   all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
   all_sample_TPM1 <- apply(object, 2, function(i) {
@@ -47,20 +47,25 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       )
     }
     features <- intersect(features, rownames(all_sample_TPM1))
-    missing_features_ref_data <- setdiff(features, rownames(x = reference))
-    if (length(x = missing_features_ref_data) > 0) {
-      warning("The following features are not present in the reference: ",
-        paste(missing_features_ref_data, collapse = ", "), ifelse(test = FALSE,
-          yes = ", attempting to find updated synonyms",
-          no = ", not searching for symbol synonyms"
-        ),
-        call. = FALSE, immediate. = TRUE
-      )
+    
+    # 判断是否使用 reference 数据
+    if (ref) {
+      missing_features_ref_data <- setdiff(features, rownames(reference))
+      if (length(missing_features_ref_data) > 0) {
+        warning("The following features are not present in the reference: ",
+          paste(missing_features_ref_data, collapse = ", "), ifelse(test = FALSE,
+            yes = ", attempting to find updated synonyms",
+            no = ", not searching for symbol synonyms"
+          ),
+          call. = FALSE, immediate. = TRUE
+        )
+      }
+      features <- intersect(features, rownames(reference))
+      if (length(features) < 3) {
+        stop("The number of features less than 3")
+      }
     }
-    features <- intersect(features, rownames(reference))
-    if (length(features) < 3) {
-      stop("The number of features less than 3")
-    }
+
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
     features.scores.vec <- pbapply::pbsapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
@@ -78,29 +83,38 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       features.scores.use <- mean(feature.score) - mean(ctrl.score)
       return(features.scores.use)
     })
-    features_sample <- all_sample_TPM1[features, ]
-    features_ref <- reference[features, names(markers)[k]]
-    div_percent <- features_sample / features_ref
-    flag_lower <- (features_sample - features_ref) < 0
-    number_lower <- colSums(flag_lower)
-    percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
-      ifelse(number_lower[i] == 0, 1, sum(div_percent[, i][flag_lower[, i]], (length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
-    })
-    features.scores.vec <- features.scores.vec * percentage
+    
+    if (ref) {
+      features_sample <- all_sample_TPM1[features, ]
+      features_ref <- reference[features, names(markers)[k]]
+      div_percent <- features_sample / features_ref
+      flag_lower <- (features_sample - features_ref) < 0
+      number_lower <- colSums(flag_lower)
+      percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
+        ifelse(number_lower[i] == 0, 1, sum(div_percent[, i][flag_lower[, i]], (length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
+      })
+      features.scores.vec <- features.scores.vec * percentage
+    }
+    
     return(features.scores.vec)
   })))
+  
   rownames(features.scores.df) <- names(markers)
-  for (i in c(2, 4:6)) {
-    for (j in 1:ncol(all_sample_TPM1)) {
-      pq <- as.numeric(reference["CD4", names(markers)[i]])
-      if (all_sample_TPM1["CD4", j] < pq) {
-        percentage_T <- all_sample_TPM1["CD4", j] / pq
-      } else {
-        percentage_T <- 1
+  
+  if (ref) {
+    for (i in c(2, 4:6)) {
+      for (j in 1:ncol(all_sample_TPM1)) {
+        pq <- as.numeric(reference["CD4", names(markers)[i]])
+        if (all_sample_TPM1["CD4", j] < pq) {
+          percentage_T <- all_sample_TPM1["CD4", j] / pq
+        } else {
+          percentage_T <- 1
+        }
+        features.scores.df[i, j] <- features.scores.df[i, j] * percentage_T
       }
-      features.scores.df[i, j] <- features.scores.df[i, j] * percentage_T
     }
   }
+  
   vec <- sapply(seq_len(ncol(features.scores.df)), function(i) {
     max(features.scores.df[4, i], features.scores.df[5, i], features.scores.df[6, i])
   })
