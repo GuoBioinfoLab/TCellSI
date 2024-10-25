@@ -81,7 +81,22 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       return(features.scores.use)
     })
     features.scores.vec <- unlist(features.scores.vec)
-    return(as.data.frame(t(features.scores.vec)))
+      # 如果 ref = TRUE，计算与参考数据的比例
+    if (ref) {
+      features_sample <- all_sample_TPM1[features, ]
+      features_ref <- reference[features, names(markers)[k]]
+      div_percent <- features_sample / features_ref
+      flag_lower <- (features_sample - features_ref) < 0
+      number_lower <- colSums(flag_lower)
+
+      percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
+        ifelse(number_lower[i] == 0, 1, 
+               sum(div_percent[, i][flag_lower[, i]], 
+                   (length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
+      })
+      features.scores.vec <- features.scores.vec * percentage
+    }
+    return(features.scores.vec)
   })))
   colnames(features.scores.df) <- colnames(object)
   rownames(features.scores.df) <- names(markers)
