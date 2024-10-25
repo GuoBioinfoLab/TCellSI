@@ -78,7 +78,7 @@ TCellSI still shows excellent results in the calculation of single-cell data and
 
 In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. You can use the count data directly to do the calculations of TCellSI. If the results are unsatisfactory, we suggested to convert it to the log(TPM +1) format or use other scaled method. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data. And recommended 0-1 normalization of calculation results.
 ```
-scRNA_scores <- TCellSI::TCSS_scRNAseqCalculate(sample_scRNA,core= XXX ) # core: default value is 4
+scRNA_scores <- TCellSI::TCSS_scRNAseqCalculate(sample_scRNA, core= XXX, ref = TRUE) # core: default value is 4; Optionally, ref = FALSE
 scRNA_scores_normalized <- apply(scRNA_scores, 2, function(x) (x - min(x)) / (max(x) - min(x)))
 ```
 Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
