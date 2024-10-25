@@ -19,13 +19,13 @@ Sample_expression: Complete gene expression data.frame in TPM format by log2-tra
 ```
 sample_expression <- TCellSI::exampleSample
 # sample_expression
-#            SRR5088825  SRR5088828  SRR5088830  ...
-# 5_8S_rRNA    0.000000    0.000000   0.0000000
-# 5S_rRNA      0.000000    0.000000   0.4346853
-# 7SK          0.0c0000    0.000000   0.0000000
-# A1BG         1.907599    3.284418   4.0821248
-# A1BG-AS1     3.083914    2.021501   4.5169002
-# ...
+            SRR5088825  SRR5088828  SRR5088830  ...
+ 5_8S_rRNA    0.000000    0.000000   0.0000000
+ 5S_rRNA      0.000000    0.000000   0.4346853
+ 7SK          0.0c0000    0.000000   0.0000000
+ A1BG         1.907599    3.284418   4.0821248
+ A1BG-AS1     3.083914    2.021501   4.5169002
+ ...
 ResultScores <- TCellSI::TCSS_Calculate(sample_expression, ref = TRUE) (Optionally, ref = FALSE)
 ```
 Output:
@@ -66,12 +66,12 @@ Forms of reference and markers look like:
 ```
 #markers: A list of multiple cell states containing specific gene sets
 #The number of marker genes per cell state can vary.
-#$cell_state1
-#[1] "XXX"  "XXX"  "XXX" ...
-#$cell_state2
-#[1] "XXX"  "XXX"  "XXX" ...
-#$cell_state3
-#[1] "XXX"  "XXX"  "XXX" ...
+$cell_state1
+[1] "XXX"  "XXX"  "XXX" ...
+$cell_state2
+[1] "XXX"  "XXX"  "XXX" ...
+$cell_state3
+[1] "XXX"  "XXX"  "XXX" ...
 ```
 ## How to use TCellSI for scRNA-seq data?
 TCellSI still shows excellent results in the calculation of single-cell data and can assist in `single-cell annotation`.
@@ -89,17 +89,17 @@ In addition, if you have an single-cell population annotation, you can create ps
 How to create pseudobulk samples from single cell data ? If you want to do this, you should prepare an expression data, which should be either log2(TPM+1) or normalized single-cell data. In this data, each row represents a gene and each column represents a cell ID (see example as follows). Also, you should prepare a single-cell annotation file, which includes columns of cell annotation and cell ID in expression file (see example as follows). 
 ```
 # expression data
-#             NP710.20180123  NP711.20180123  NP71.20180123 ...
-#A1BG         0.070079488      0.216835131     6.269805313
-#NAT2         0.002001509      0.003654851     0.003190016
-#ADA          0.085464008      0.088970085     0.057264107
-#...
+             NP710.20180123  NP711.20180123  NP71.20180123 ...
+A1BG         0.070079488      0.216835131     6.269805313
+NAT2         0.002001509      0.003654851     0.003190016
+ADA          0.085464008      0.088970085     0.057264107
+...
 # single-cell annotation file
-#             UniqueCell_ID   annotation
-#             NTH5.20180123   CD4_C01_CCR7
-#             NTH64.20180123  CD4_C01_CCR7
-#             NTR57.20180123  CD4_C01_CCR7 
-#             ...
+             UniqueCell_ID   annotation
+             NTH5.20180123   CD4_C01_CCR7
+             NTH64.20180123  CD4_C01_CCR7
+             NTR57.20180123  CD4_C01_CCR7 
+             ...
 ```
 Then, you can use the following function to get pseudobulk samples.
 ```
@@ -114,10 +114,10 @@ pseudo_bulk <- TCellSI::create_pseudo_bulk(
 ) 
 # see examples of the result
 # pseudo_bulk, each column represents a newly pseudobulk samples, each row represents a gene.
-#         CD4_C01_CCR7_bulk   CD4_C01_CCR7_bulk.1  CD4_C01_CCR7_bulk.2
-#A1BG      0.495165739          0.67542360           0.737122107
-#NAT2      0.006033183          0.00337272           0.007104438
-#ADA       0.855647562          1.06058830           0.898952625
+         CD4_C01_CCR7_bulk   CD4_C01_CCR7_bulk.1  CD4_C01_CCR7_bulk.2
+A1BG      0.495165739          0.67542360           0.737122107
+NAT2      0.006033183          0.00337272           0.007104438
+ADA       0.855647562          1.06058830           0.898952625
 Result <- TCSS_Calculate(pseudo_bulk)
 ```
 ## Credit
