@@ -21,67 +21,60 @@
 
 TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1, ref = TRUE) {
   set.seed(seed = seed)
+  # 计算 Housekeeping 基因的平均值
   all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
+  # 计算所有样本的 TPM1 矩阵
   all_sample_TPM1 <- apply(object, 2, function(i) {
     return(i * all_sample_HK / mean(na.omit(i[HKgenes])))
   })
   helper_message_shown <- FALSE
-  features.scores.df <- as.data.frame(dplyr::bind_rows(lapply(seq_len(length(markers)), function(k) {
+  # 计算特征得分列表
+  scores_list <- lapply(seq_len(length(markers)), function(k) {
     if (k %in% c(1, 2, 3, 7, 8, 9, 10)) {
       message(paste0("Calculating of ", names(markers)[k]), " state")
-    } else if (k %in% c(4)) {
-      if (!helper_message_shown) {
-        message(paste0("Calculating of Helper state"))
-        helper_message_shown <- TRUE
-      }
+    } else if (k == 4 && !helper_message_shown) {
+      message("Calculating of Helper state")
+      helper_message_shown <- TRUE
     }
     features <- markers[[k]]
+    # 检查缺失的特征
     missing_features_input_sample <- setdiff(features, rownames(all_sample_TPM1))
     if (length(missing_features_input_sample) > 0) {
       warning("The following features are not present in the object: ",
-        paste(missing_features_input_sample, collapse = ", "), ifelse(test = FALSE,
-          yes = ", attempting to find updated synonyms",
-          no = ", not searching for symbol synonyms"
-        ),
-        call. = FALSE, immediate. = TRUE
-      )
+              paste(missing_features_input_sample, collapse = ", "),
+              call. = FALSE, immediate. = TRUE)
     }
     features <- intersect(features, rownames(all_sample_TPM1))
-    if (ref) {  # 判断是否使用 reference 数据
+    if (ref) {
       missing_features_ref_data <- setdiff(features, rownames(reference))
       if (length(missing_features_ref_data) > 0) {
         warning("The following features are not present in the reference: ",
-          paste(missing_features_ref_data, collapse = ", "), ifelse(test = FALSE,
-            yes = ", attempting to find updated synonyms",
-            no = ", not searching for symbol synonyms"
-          ),
-          call. = FALSE, immediate. = TRUE
-        )
+                paste(missing_features_ref_data, collapse = ", "),
+                call. = FALSE, immediate. = TRUE)
       }
       features <- intersect(features, rownames(reference))
       if (length(features) < 3) {
-        stop("The number of features less than 3")
+        stop("The number of features is less than 3")
       }
     }
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
+    # 计算特征得分向量
     features.scores.vec <- sapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
       data.avg <- all_sample_TPM2[, i]
       data.avg <- sort(data.avg)
-      data.cut <- ggplot2::cut_number(data.avg + rnorm(n = length(data.avg)) / 1e+6, n = nbin, labels = FALSE, right = FALSE)
+      data.cut <- ggplot2::cut_number(data.avg + rnorm(n = length(data.avg)) / 1e+6, n = nbin, labels = FALSE)
       names(data.cut) <- data.avg
       ctrl.use <- lapply(seq_len(nbin), function(j) {
-        as.numeric(names(sample(data.cut[which(data.cut == j)], ctrl, FALSE)))
+        as.numeric(names(sample(data.cut[which(data.cut == j)], ctrl, replace = FALSE)))
       })
       sample_feature <- c(features.exp, unlist(ctrl.use))
       features.use <- rank(sample_feature) / length(sample_feature)
       feature.score <- features.use[features]
       ctrl.score <- sort(features.use)[1:length(features.exp)]
-      features.scores.use <- mean(feature.score) - mean(ctrl.score)
-      return(features.scores.use)
+      return(mean(feature.score) - mean(ctrl.score))
     })
-    features.scores.vec <- unlist(features.scores.vec)
-      # 如果 ref = TRUE，计算与参考数据的比例
+    # 如果 ref = TRUE，计算与参考数据的比例
     if (ref) {
       features_sample <- all_sample_TPM1[features, ]
       features_ref <- reference[features, names(markers)[k]]
@@ -90,35 +83,47 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       number_lower <- colSums(flag_lower)
 
       percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
-        ifelse(number_lower[i] == 0, 1, 
-               sum(div_percent[, i][flag_lower[, i]], 
-                   (length(flag_lower[, i]) - sum(flag_lower[, i]))) / length(features))
+        ifelse(number_lower[i] == 0, 1,
+               sum(div_percent[, i][flag_lower[, i]]) / length(features))
       })
       features.scores.vec <- features.scores.vec * percentage
     }
-    return(features.scores.vec)
-  })))
+    # 返回数据框，确保格式正确
+    if (length(features.scores.vec) > 0) {
+      return(as.data.frame(t(features.scores.vec)))
+    } else {
+      return(NULL)
+    }
+  })
+  # 过滤掉 NULL 结果并绑定数据框
+  features.scores.df <- dplyr::bind_rows(scores_list)
+  # 设置行名和列名
   colnames(features.scores.df) <- colnames(object)
   rownames(features.scores.df) <- names(markers)
-  if (ref) {  # 如果 ref = TRUE，执行 reference 相关的计算
+
+  # 如果 ref = TRUE，调整特定 marker 的得分
+  if (ref) {
     for (i in c(2, 4:6)) {
       for (j in 1:ncol(all_sample_TPM1)) {
         pq <- as.numeric(reference["CD4", names(markers)[i]])
-        if (all_sample_TPM1["CD4", j] < pq) {
-          percentage_T <- all_sample_TPM1["CD4", j] / pq
-        } else {
-          percentage_T <- 1
-        }
+        percentage_T <- ifelse(all_sample_TPM1["CD4", j] < pq,
+                               all_sample_TPM1["CD4", j] / pq, 1)
         features.scores.df[i, j] <- features.scores.df[i, j] * percentage_T
       }
     }
   }
+
+  # 添加 Helper 行并重新排序
   vec <- sapply(seq_len(ncol(features.scores.df)), function(i) {
     max(features.scores.df[4, i], features.scores.df[5, i], features.scores.df[6, i])
   })
   features.scores.df <- rbind(features.scores.df, vec)
   rownames(features.scores.df)[11] <- "Helper"
   features.scores.df <- features.scores.df[-4:-6, ]
-  features.scores.df <- features.scores.df[c("Quiescence", "Regulating", "Proliferation", "Helper", "Cytotoxicity", "Progenitor_exhaustion", "Terminal_exhaustion", "Senescence"), ]
+  features.scores.df <- features.scores.df[c("Quiescence", "Regulating", "Proliferation",
+                                             "Helper", "Cytotoxicity",
+                                             "Progenitor_exhaustion",
+                                             "Terminal_exhaustion", "Senescence"), ]
+
   return(features.scores.df)
 }
