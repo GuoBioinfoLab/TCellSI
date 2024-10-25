@@ -119,7 +119,7 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
     }
   })
   features.scores.df <- dplyr::bind_rows(scores_list)
-
+  colnames(features.scores.df) <- colnames(object)
   rownames(features.scores.df) <- names(markers)
 
   if (ref) {
