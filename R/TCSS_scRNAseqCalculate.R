@@ -73,9 +73,7 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
         stop("The number of features less than 3")
       }
     }
-
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
-
     # 使用 cores 参数控制并行处理
     features.scores.vec <- parallel::mclapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
@@ -120,10 +118,7 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
       return(NULL)
     }
   })
-
-  # 过滤掉 NULL 的结果并绑定所有行
-  valid_scores <- scores_list[!sapply(scores_list, is.null)]
-  features.scores.df <- dplyr::bind_rows(valid_scores)
+  features.scores.df <- dplyr::bind_rows(scores_list)
 
   rownames(features.scores.df) <- names(markers)
 
