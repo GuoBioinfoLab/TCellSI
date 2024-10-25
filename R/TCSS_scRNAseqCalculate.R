@@ -36,7 +36,8 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
 
   helper_message_shown <- FALSE
 
-  features.scores.df <- as.data.frame(dplyr::bind_rows(lapply(seq_len(length(markers)), function(k) {
+  # 计算特征得分，并确保返回的数据是有效的
+  scores_list <- lapply(seq_len(length(markers)), function(k) {
     if (k %in% c(1, 2, 3, 7, 8, 9, 10)) {
       message(paste0("Calculating of ", names(markers)[k]), " state")
     } else if (k == 4 && !helper_message_shown) {
@@ -96,6 +97,7 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
     }, mc.cores = cores)
 
     features.scores.vec <- unlist(features.scores.vec)
+
     if (ref) {
       features_sample <- all_sample_TPM1[features, ]
       features_ref <- reference[features, names(markers)[k]]
@@ -111,8 +113,17 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
       features.scores.vec <- features.scores.vec * percentage
     }
 
-    return(features.scores.vec)
-  })))
+    # 检查返回结果是否有效，并返回数据框
+    if (length(features.scores.vec) > 0) {
+      return(as.data.frame(t(features.scores.vec)))
+    } else {
+      return(NULL)
+    }
+  })
+
+  # 过滤掉 NULL 的结果并绑定所有行
+  valid_scores <- scores_list[!sapply(scores_list, is.null)]
+  features.scores.df <- dplyr::bind_rows(valid_scores)
 
   rownames(features.scores.df) <- names(markers)
 
