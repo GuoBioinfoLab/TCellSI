@@ -21,7 +21,7 @@
 #' TCSS_scRNAseqCalculate(sample_expression)
 #' }
 
-TCSS_scRNAseqCalculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1, cores = 4) {
+TCSS_scRNAseqCalculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1, cores = 1) {
   set.seed(seed = seed)
   all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
   all_sample_TPM1 <- apply(object, 2, function(i) {
