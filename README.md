@@ -32,7 +32,7 @@ Output:
 The output of the function is a data.frame with TCSS metrics, where each row corresponds to a T cell state and each column represents a sample name.  
 
 ```
- ResultScores
+# ResultScores
                         SRR5088825  SRR5088828  SRR5088830
  Quiescence              0.6422158   0.6153140   0.5105856
  Regulating              0.4404173   0.3974391   0.1670356
