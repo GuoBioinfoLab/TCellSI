@@ -32,19 +32,19 @@ Output:
 The output of the function is a data.frame with TCSS metrics, where each row corresponds to a T cell state and each column represents a sample name.  
 
 ```
-# ResultScores
-#                        SRR5088825  SRR5088828  SRR5088830
-# Quiescence              0.6422158   0.6153140   0.5105856
-# Regulating              0.4404173   0.3974391   0.1670356
-# Proliferation           0.5780474   0.5761891   0.3994404
-# Helper                  0.5647604   0.4063729   0.2121070
-# Cytotoxicity            0.6482720   0.5826073   0.1829111
-# Progenitor_exhaustion   0.5905679   0.5308304   0.2482848
-# Terminal_exhaustion     0.6624943   0.6222188   0.3311532
-# Senescence              0.5921543   0.5725185   0.2896508
+ ResultScores
+                        SRR5088825  SRR5088828  SRR5088830
+ Quiescence              0.6422158   0.6153140   0.5105856
+ Regulating              0.4404173   0.3974391   0.1670356
+ Proliferation           0.5780474   0.5761891   0.3994404
+ Helper                  0.5647604   0.4063729   0.2121070
+ Cytotoxicity            0.6482720   0.5826073   0.1829111
+ Progenitor_exhaustion   0.5905679   0.5308304   0.2482848
+ Terminal_exhaustion     0.6624943   0.6222188   0.3311532
+ Senescence              0.5921543   0.5725185   0.2896508
 ```
 
-If you want to apply this method to other states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your cell states. You can then calculate the scores for your cell states using the following function. If you choose not to provide a reference expression spectrum but to do the calculation directly, you can use the parameter ref=FALSE and do not need to provide the reference parameter.
+If you want to apply this method to other states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your states. You can then calculate the scores for your states using the following function. If you choose not to provide a reference expression spectrum but to do the calculation directly, you can use the parameter ref=FALSE and do not need to provide the reference parameter.
 
 ```
 OtherScores <- TCellSI::CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, markers = XXX)
@@ -55,13 +55,13 @@ Forms of reference and markers look like:
 ```
 #reference
 #The self-constructed reference should contain log2-transformed, TPM-normalized gene expression data from RNA-seq or scRNA-seq. 
-#             cell_state1  cell_state2  cell_state3  ...
-# DDX11L1      0.32323232   0.54567463   0.32456323
-# WASH7P       0.82670591   1.89565638   1.40492732
-# MIR6859-1    0.02172025   0.03816506   0.52313432
-# MIR1302-2HG  0.00000000   0.00000000   0.00032302
-# MIR1302-2    0.00000000   0.00000000   0.00002132
-#              ...
+             cell_state1  cell_state2  cell_state3  ...
+ DDX11L1      0.32323232   0.54567463   0.32456323
+ WASH7P       0.82670591   1.89565638   1.40492732
+ MIR6859-1    0.02172025   0.03816506   0.52313432
+ MIR1302-2HG  0.00000000   0.00000000   0.00032302
+ MIR1302-2    0.00000000   0.00000000   0.00002132
+              ...
 ```
 ```
 #markers: A list of multiple cell states containing specific gene sets
