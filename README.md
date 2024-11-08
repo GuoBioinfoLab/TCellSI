@@ -3,9 +3,8 @@ T cell state identifier (TCellSI) is a tool to access eight distinct T cell stat
 
 ![image](https://github.com/VyvyanYjm/TCellSI/blob/main/algorithm.jpg)
 ## Installation
-
+**最后更新于：2024 年 11 月 8 日**
 You can install the development version of TCellSI by:
-
 ``` r
 # install.packages("devtools")
 devtools::install_github("GuoBioinfoLab/TCellSI")
