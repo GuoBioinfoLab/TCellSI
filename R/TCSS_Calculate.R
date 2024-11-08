@@ -21,9 +21,7 @@
 
 TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, seed = 1, ref = TRUE) {
   set.seed(seed = seed)
-  # 计算 Housekeeping 基因的平均值
   all_sample_HK <- mean(rowMeans(object[which(rownames(object) %in% HKgenes), ]))
-  # 计算所有样本的 TPM1 矩阵
   all_sample_TPM1 <- apply(object, 2, function(i) {
     return(i * all_sample_HK / mean(na.omit(i[HKgenes])))
   })
