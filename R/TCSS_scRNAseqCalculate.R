@@ -54,12 +54,10 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
               call. = FALSE, immediate. = TRUE)
     }
     features <- intersect(features, rownames(all_sample_TPM1))
-
     if (ref) {
       if (is.null(reference) || !is.data.frame(reference)) {
         stop("Error: 'reference' must be provided and must be a data frame if 'ref' is TRUE.")
       }
-
       missing_features_ref_data <- setdiff(features, rownames(reference))
       if (length(missing_features_ref_data) > 0) {
         warning("The following features are not present in the reference: ",
