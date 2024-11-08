@@ -79,10 +79,9 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       div_percent <- features_sample / features_ref
       flag_lower <- (features_sample - features_ref) < 0
       number_lower <- colSums(flag_lower)
-
       percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
-        ifelse(number_lower[i] == 0, 1,
-               sum(div_percent[, i][flag_lower[, i]]) / length(features))
+      ifelse(number_lower[i] == 0, 1,
+             (sum(div_percent[, i][flag_lower[, i]]) + sum(flag_lower[, i] == FALSE)) / length(features))
       })
       features.scores.vec <- features.scores.vec * percentage
     }
@@ -110,7 +109,6 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       }
     }
   }
-
   # 添加 Helper 行并重新排序
   vec <- sapply(seq_len(ncol(features.scores.df)), function(i) {
     max(features.scores.df[4, i], features.scores.df[5, i], features.scores.df[6, i])
