@@ -56,7 +56,6 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       }
     }
     all_sample_TPM2 <- all_sample_TPM1[which(!rownames(all_sample_TPM1) %in% features), ]
-    # 计算特征得分向量
     features.scores.vec <- sapply(seq_len(ncol(all_sample_TPM2)), function(i) {
       features.exp <- all_sample_TPM1[features, i]
       data.avg <- all_sample_TPM2[, i]
@@ -85,7 +84,6 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       })
       features.scores.vec <- features.scores.vec * percentage
     }
-    # 返回数据框，确保格式正确
     if (length(features.scores.vec) > 0) {
       return(as.data.frame(t(features.scores.vec)))
     } else {
@@ -94,7 +92,6 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
   })
   # 过滤掉 NULL 结果并绑定数据框
   features.scores.df <- dplyr::bind_rows(scores_list)
-  # 设置行名和列名
   colnames(features.scores.df) <- colnames(object)
   rownames(features.scores.df) <- names(markers)
 
@@ -109,7 +106,6 @@ TCSS_Calculate <- function(object, reference = ref_data, nbin = 50, ctrl = 100, 
       }
     }
   }
-  # 添加 Helper 行并重新排序
   vec <- sapply(seq_len(ncol(features.scores.df)), function(i) {
     max(features.scores.df[4, i], features.scores.df[5, i], features.scores.df[6, i])
   })
