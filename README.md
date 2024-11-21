@@ -47,7 +47,7 @@ The output of the function is a data.frame with TCSS metrics, where each row cor
 If you want to apply this method to other states that interest you, you should compile a reference spectrum and prepare specific marker gene sets of your states. You can then calculate the scores for your states using the following function. If you choose not to provide a reference expression spectrum but to do the calculation directly, you can use the parameter ref=FALSE and do not need to provide the reference parameter.
 
 ```
-OtherScores <- TCellSI::CSS_Calculate‎(sample_expression, ref=TRUE, reference = XXX, markers = XXX)
+OtherScores <- TCellSI::CSS_Calculate‎(sample_expression, ref=FALSE, markers = XXX)
 ```
 
 Forms of reference and markers look like:
