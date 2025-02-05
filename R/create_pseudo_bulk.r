@@ -22,7 +22,7 @@
 create_pseudo_bulk <- function(annotation_data, expression_data, cluster_col, cell_id_col, n_clusters = 18, factor = 5, sampling_rate = 0.6) {
   pseudo_bulk_list <- lapply(1:n_clusters, function(i) {
     pseudo_bulk_df <- as.data.frame(lapply(1:round(table(annotation_data[[cluster_col]])[i] / factor), function(j) {
-      sp <- sample(annotation_data[which(annotation_data[[cluster_col]] == names(table(annotation_data[[cluster_col]]))[i]), ][[cell_id_col]], round(table(annotation_data[[cluster_col]])[i] / factor) * sampling_rate)
+      sp <- sample(annotation_data[which(annotation_data[[cluster_col]] == names(table(annotation_data[[cluster_col]]))[i]), ][[cell_id_col]], round(table(annotation_data[[cluster_col]])[i]) * sampling_rate)
       pseudo_bulk <- as.data.frame(apply(expression_data[, which(colnames(expression_data) %in% sp)], 1, mean))
       return(pseudo_bulk)
     }))
