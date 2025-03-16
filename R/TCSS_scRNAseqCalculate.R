@@ -102,7 +102,7 @@ TCSS_scRNAseqCalculate <- function(object, reference = ref_data, ref = TRUE, nbi
       number_lower <- colSums(flag_lower) 
       percentage <- sapply(seq_len(ncol(div_percent)), function(i) {
       ifelse(number_lower[i] == 0, 1,
-             (sum(div_percent[, i][flag_lower[, i]]) + sum(flag_lower[, i] == FALSE)) / length(features))
+             (sum(div_percent[, i][flag_lower[, i]]) , sum(flag_lower[, i] == FALSE)) / length(features))
       })
       features.scores.vec <- features.scores.vec * percentage
     }
