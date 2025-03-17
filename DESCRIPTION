@@ -1,7 +1,7 @@
 Package: TCellSI
 Type: Package
 Title: T Cell State Identifier 
-Version: 0.2.0
+Version: 1.2.0
 Author@R: 
     c(person(given = "Vyvyan",
            family = "Yang",
