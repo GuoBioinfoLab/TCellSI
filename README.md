@@ -76,13 +76,14 @@ $cell_state3
 ## How to use TCellSI for scRNA-seq data?
 TCellSI still shows excellent results in the calculation of single-cell data and can assist in `single-cell annotation`.
 
-In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data directly or seurat_obj@assays$RNA@counts in the seurat object. We suggested to convert it to the log2(TPM +1) format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data. 
+In terms of operation. First, you should extract the count expression of single-cell data by reading the count file of single-cell data. We suggested to convert it to the log2(TPM +1) format. Then you can use TCellSI to perform calculations of the states scores for each cell of the single-cell data. 
 ```
 scRNA_scores <- TCellSI::TCSS_scRNAseqCalculate(sample_scRNA, core= XXX, ref = TRUE) # core: default value is 4; Optionally, ref = FALSE
 ```
 Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
 ```
-FeaturePlot(object = seurat_object, features = "TCSS")  #viewing the distribution of scores in a umap; "TCSS" is the name of the column in which the categorical value is added to the metadata object
+FeaturePlot(object = seurat_object, features = "TCSS")  #view the distribution of scores in a umap; "TCSS" is the name of the column in which the categorical value is added to the metadata object
+DotPlot(seurat_object, features = c("Quiescence","Helper","Progenitor_exhaustion","Terminal_exhaustion","Regulating","Cytotoxicity","Senescence","Proliferation")) #view the overall characterization of TCSS for different clustered subpopulations
 ```
 In addition, if you have an single-cell population annotation, you can create pseudobulk samples and then calculate the state scores for each samples, which can reduce the problem of drop-out in the single-cell data that leads to less accurate results. The creation of the pseudobulk is as follows:
 ## Pseudobulk creation tutorial for single-cell data analysis
