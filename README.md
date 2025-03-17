@@ -83,6 +83,8 @@ scRNA_scores <- TCellSI::TCSS_scRNAseqCalculate(sample_scRNA, core= XXX, ref = T
 Then you can add the score value of the result of the calculation into the metadata data box of the seurat object.
 ```
 FeaturePlot(object = seurat_object, features = "TCSS")  #view the distribution of scores in a umap; "TCSS" is the name of the column in which the categorical value is added to the metadata object
+```
+```
 DotPlot(seurat_object, features = c("Quiescence","Helper","Progenitor_exhaustion","Terminal_exhaustion","Regulating","Cytotoxicity","Senescence","Proliferation")) #view the overall characterization of TCSS for different clustered subpopulations
 ```
 In addition, if you have an single-cell population annotation, you can create pseudobulk samples and then calculate the state scores for each samples, which can reduce the problem of drop-out in the single-cell data that leads to less accurate results. The creation of the pseudobulk is as follows:
